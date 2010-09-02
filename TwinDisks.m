@@ -1,16 +1,14 @@
 function TwinDisks
-close all; clear all; 
-format long
 SolveOrdinaryDifferentialEquations
-% File  TwinDisks.m  created by Autolev 4.1 on Tue Aug 31 12:23:02 2010
+% File  TwinDisks.m  created by Autolev 4.1 on Wed Sep 01 23:10:09 2010
 
 
 %===========================================================================
 function VAR = ReadUserInput
 global   a1 a2 a3 ida11 ida22 ida33 idb11 idb22 idb33 l1 l2 l3 mda mdb rada radb;
-global   e1 e2 e3 e4 posa1 posa2 posa3 posb1 posb2 posb3 u1;
-global   ke pe u2 u3 e1p e2p e3p e4p posa1p posa2p posa3p posb1p posb2p posb3p u1p;
-global   DEGtoRAD RADtoDEG z;
+global   cahat1 cahat2 cahat3 cbhat1 cbhat2 cbhat3 e1 e2 e3 e4 posa1 posa2 posa3 posb1 posb2 posb3 u1;
+global   ke pe u2 u3 cahat1p cahat2p cahat3p cbhat1p cbhat2p cbhat3p e1p e2p e3p e4p posa1p posa2p posa3p posb1p posb2p posb3p u1p;
+global   DEGtoRAD RADtoDEG z t_da t_db Encode;
 global   TINITIAL TFINAL INTEGSTP PRINTINT ABSERR RELERR;
 
 %-------------------------------+--------------------------+-------------------+-----------------
@@ -33,20 +31,26 @@ mdb                             =  2;                      % UNITS              
 rada                            =  .1;                     % UNITS               Constant
 radb                            =  .1;                     % UNITS               Constant
 
+cahat1                          =  0;                      % UNITS               Initial Value
+cahat2                          =  0;                      % UNITS               Initial Value
+cahat3                          =  0;                      % UNITS               Initial Value
+cbhat1                          = -0.1;                    % UNITS               Initial Value
+cbhat2                          =  0.1414213562373095;     % UNITS               Initial Value
+cbhat3                          =  0;                      % UNITS               Initial Value
 e1                              =  0.3826834323650898;     % UNITS               Initial Value
 e2                              =  0;                      % UNITS               Initial Value
 e3                              =  0;                      % UNITS               Initial Value
 e4                              =  0.9238795325112867;     % UNITS               Initial Value
-posa1                           =  0.0;                    % UNITS               Initial Value
-posa2                           =  0.0;                    % UNITS               Initial Value
-posa3                           =  0.0;                    % UNITS               Initial Value
-posb1                           =  0.0;                    % UNITS               Initial Value
-posb2                           =  0.0;                    % UNITS               Initial Value
-posb3                           =  0.0;                    % UNITS               Initial Value
+posa1                           =  0;                      % UNITS               Initial Value
+posa2                           =  0.07071067811865475;    % UNITS               Initial Value
+posa3                           =  0.07071067811865477;    % UNITS               Initial Value
+posb1                           = -0.1;                    % UNITS               Initial Value
+posb2                           =  0;                      % UNITS               Initial Value
+posb3                           =  0;                      % UNITS               Initial Value
 u1                              =  2;                      % UNITS               Initial Value
 
 TINITIAL                        =  0.0;                    % UNITS               Initial Time
-TFINAL                          =  5.0;                    % UNITS               Final Time
+TFINAL                          =  1.0;                    % UNITS               Final Time
 INTEGSTP                        =  0.1;                    % UNITS               Integration Step
 PRINTINT                        =  1;                      % Positive Integer    Print-Integer
 ABSERR                          =  1.0E-08;                %                     Absolute Error
@@ -62,6 +66,8 @@ RADtoDEG = 180.0/Pi;
 z = zeros(239,1);
 
 % Evaluate constants
+cahat3p = 0;
+cbhat3p = 0;
 z(10) = cos(a2);
 z(11) = cos(a3);
 z(12) = z(10)*z(11);
@@ -120,18 +126,34 @@ z(228) = z(21)*z(172) + z(22)*z(174);
 z(229) = z(23)*z(179);
 
 % Set the initial values of the states
-VAR(1) = e1;
-VAR(2) = e2;
-VAR(3) = e3;
-VAR(4) = e4;
-VAR(5) = posa1;
-VAR(6) = posa2;
-VAR(7) = posa3;
-VAR(8) = posb1;
-VAR(9) = posb2;
-VAR(10) = posb3;
-VAR(11) = u1;
+VAR(1) = cahat1;
+VAR(2) = cahat2;
+VAR(3) = cahat3;
+VAR(4) = cbhat1;
+VAR(5) = cbhat2;
+VAR(6) = cbhat3;
+VAR(7) = e1;
+VAR(8) = e2;
+VAR(9) = e3;
+VAR(10) = e4;
+VAR(11) = posa1;
+VAR(12) = posa2;
+VAR(13) = posa3;
+VAR(14) = posb1;
+VAR(15) = posb2;
+VAR(16) = posb3;
+VAR(17) = u1;
 
+
+
+%===========================================================================
+function OpenOutputFilesAndWriteHeadings
+FileIdentifier = fopen('TwinDisks.1', 'wt');   if( FileIdentifier == -1 ) error('Error: unable to open file TwinDisks.1'); end
+fprintf( 1,             '%%     ke+pe     dot(v_bhat_n>, dot(v_bhat_n>,       e1             e2             e3             e4             u1           cahat1         cahat2         cahat3         cbhat1         cbhat2         cbhat3\n' );
+fprintf( 1,             '%%    (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)\n\n' );
+fprintf(FileIdentifier, '%% FILE: TwinDisks.1\n%%\n' );
+fprintf(FileIdentifier, '%%     ke+pe     dot(v_bhat_n>, dot(v_bhat_n>,       e1             e2             e3             e4             u1           cahat1         cahat2         cahat3         cbhat1         cbhat2         cbhat3\n' );
+fprintf(FileIdentifier, '%%    (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)\n\n' );
 
 
 
@@ -140,11 +162,12 @@ VAR(11) = u1;
 %===========================================================================
 function SolveOrdinaryDifferentialEquations
 global   a1 a2 a3 ida11 ida22 ida33 idb11 idb22 idb33 l1 l2 l3 mda mdb rada radb;
-global   e1 e2 e3 e4 posa1 posa2 posa3 posb1 posb2 posb3 u1;
-global   ke pe u2 u3 e1p e2p e3p e4p posa1p posa2p posa3p posb1p posb2p posb3p u1p;
-global   DEGtoRAD RADtoDEG z;
+global   cahat1 cahat2 cahat3 cbhat1 cbhat2 cbhat3 e1 e2 e3 e4 posa1 posa2 posa3 posb1 posb2 posb3 u1;
+global   ke pe u2 u3 cahat1p cahat2p cahat3p cbhat1p cbhat2p cbhat3p e1p e2p e3p e4p posa1p posa2p posa3p posb1p posb2p posb3p u1p;
+global   DEGtoRAD RADtoDEG z t_da t_db Encode;
 global   TINITIAL TFINAL INTEGSTP PRINTINT ABSERR RELERR;
 
+OpenOutputFilesAndWriteHeadings
 VAR = ReadUserInput;
 OdeMatlabOptions = odeset( 'RelTol',RELERR, 'AbsTol',ABSERR, 'MaxStep',INTEGSTP );
 T = TINITIAL;
@@ -159,15 +182,13 @@ while 1,
      PrintCounter = PRINTINT;
   end
   [TimeOdeArray,VarOdeArray] = ode45( @mdlDerivatives, [T T+INTEGSTP], VAR, OdeMatlabOptions, 0 );
-  figure(2),plot(TimeOdeArray,VarOdeArray(:,1:4),TimeOdeArray,VarOdeArray(:,11)),hold on
-  figure(3),plot(TimeOdeArray,VarOdeArray(:,5:10)),hold on
-  figure(5),plot(VarOdeArray(:,5),VarOdeArray(:,6),VarOdeArray(:,8),VarOdeArray(:,9)),hold on
   TimeAtEndOfArray = TimeOdeArray( length(TimeOdeArray) );
   if( abs(TimeAtEndOfArray - (T+INTEGSTP) ) >= abs(0.001*INTEGSTP) ) warning('numerical integration failed'); break;  end
   T = TimeAtEndOfArray;
   VAR = VarOdeArray( length(TimeOdeArray), : );
   PrintCounter = PrintCounter - 1;
 end
+mdlTerminate(T,VAR,0);
 
 
 
@@ -176,23 +197,29 @@ end
 %===========================================================================
 function sys = mdlDerivatives(T,VAR,u)
 global   a1 a2 a3 ida11 ida22 ida33 idb11 idb22 idb33 l1 l2 l3 mda mdb rada radb;
-global   e1 e2 e3 e4 posa1 posa2 posa3 posb1 posb2 posb3 u1;
-global   ke pe u2 u3 e1p e2p e3p e4p posa1p posa2p posa3p posb1p posb2p posb3p u1p;
-global   DEGtoRAD RADtoDEG z;
+global   cahat1 cahat2 cahat3 cbhat1 cbhat2 cbhat3 e1 e2 e3 e4 posa1 posa2 posa3 posb1 posb2 posb3 u1;
+global   ke pe u2 u3 cahat1p cahat2p cahat3p cbhat1p cbhat2p cbhat3p e1p e2p e3p e4p posa1p posa2p posa3p posb1p posb2p posb3p u1p;
+global   DEGtoRAD RADtoDEG z t_da t_db Encode;
 global   TINITIAL TFINAL INTEGSTP PRINTINT ABSERR RELERR;
 
 % Update variables after integration step
-e1 = VAR(1);
-e2 = VAR(2);
-e3 = VAR(3);
-e4 = VAR(4);
-posa1 = VAR(5);
-posa2 = VAR(6);
-posa3 = VAR(7);
-posb1 = VAR(8);
-posb2 = VAR(9);
-posb3 = VAR(10);
-u1 = VAR(11);
+cahat1 = VAR(1);
+cahat2 = VAR(2);
+cahat3 = VAR(3);
+cbhat1 = VAR(4);
+cbhat2 = VAR(5);
+cbhat3 = VAR(6);
+e1 = VAR(7);
+e2 = VAR(8);
+e3 = VAR(9);
+e4 = VAR(10);
+posa1 = VAR(11);
+posa2 = VAR(12);
+posa3 = VAR(13);
+posb1 = VAR(14);
+posb2 = VAR(15);
+posb3 = VAR(16);
+u1 = VAR(17);
 z(2) = 2*e1*e2 - 2*e3*e4;
 z(4) = 2*e1*e2 + 2*e3*e4;
 z(7) = 2*e1*e3 - 2*e2*e4;
@@ -384,19 +411,29 @@ posa3p = -z(28)*(z(7)*u2-z(8)*u1);
 posb1p = z(45)*u1 + z(46)*u2 + z(47)*u3 + z(2)*(l1*u3+z(52)*u1) - z(1)*(l2*u3-z(51)*u2) - z(3)*(l1*u2-l2*u1);
 posb2p = z(5)*(l1*u3+z(52)*u1) - z(48)*u1 - z(49)*u2 - z(50)*u3 - z(4)*(l2*u3-z(51)*u2) - z(6)*(l1*u2-l2*u1);
 posb3p = z(8)*(l1*u3+z(52)*u1) - z(7)*(l2*u3-z(51)*u2) - z(9)*(l1*u2-l2*u1);
+cahat1p = z(45)*u1 + z(46)*u2 + z(47)*u3 - z(4)*z(29)*u1 - z(5)*z(29)*u2;
+cahat2p = z(1)*z(29)*u1 + z(2)*z(29)*u2 - z(48)*u1 - z(49)*u2 - z(50)*u3;
+cbhat1p = z(45)*u1 + z(46)*u2 + z(47)*u3 + z(2)*(l1*u3+z(52)*u1) - z(4)*z(44)*u1 - z(5)*z(44)*u2 - z(6)*z(44)*u3 - z(1)*(l2*u3-z(51)*u2) - z(3)*(l1*u2-l2*u1) - z(33)*z(43)*(z(12)*u1+z(18)*u2+z(21)*u3) - z(30)*z(43)*(z(14)*u1-z(19)*u2-z(22)*u3) - z(37)*z(44)*(z(20)*u2-z(15)*u1-z(23)*u3);
+cbhat2p = z(1)*z(44)*u1 + z(2)*z(44)*u2 + z(3)*z(44)*u3 + z(5)*(l1*u3+z(52)*u1) + z(36)*z(44)*(z(20)*u2-z(15)*u1-z(23)*u3) - z(48)*u1 - z(49)*u2 - z(50)*u3 - z(4)*(l2*u3-z(51)*u2) - z(6)*(l1*u2-l2*u1) - z(34)*z(43)*(z(12)*u1+z(18)*u2+z(21)*u3) - z(31)*z(43)*(z(14)*u1-z(19)*u2-z(22)*u3);
 
 % Update derivative array prior to integration step
-VARp(1) = e1p;
-VARp(2) = e2p;
-VARp(3) = e3p;
-VARp(4) = e4p;
-VARp(5) = posa1p;
-VARp(6) = posa2p;
-VARp(7) = posa3p;
-VARp(8) = posb1p;
-VARp(9) = posb2p;
-VARp(10) = posb3p;
-VARp(11) = u1p;
+VARp(1) = cahat1p;
+VARp(2) = cahat2p;
+VARp(3) = cahat3p;
+VARp(4) = cbhat1p;
+VARp(5) = cbhat2p;
+VARp(6) = cbhat3p;
+VARp(7) = e1p;
+VARp(8) = e2p;
+VARp(9) = e3p;
+VARp(10) = e4p;
+VARp(11) = posa1p;
+VARp(12) = posa2p;
+VARp(13) = posa3p;
+VARp(14) = posb1p;
+VARp(15) = posb2p;
+VARp(16) = posb3p;
+VARp(17) = u1p;
 
 sys = VARp';
 
@@ -407,18 +444,113 @@ sys = VARp';
 %===========================================================================
 function Output = mdlOutputs(T,VAR,u)
 global   a1 a2 a3 ida11 ida22 ida33 idb11 idb22 idb33 l1 l2 l3 mda mdb rada radb;
-global   e1 e2 e3 e4 posa1 posa2 posa3 posb1 posb2 posb3 u1;
-global   ke pe u2 u3 e1p e2p e3p e4p posa1p posa2p posa3p posb1p posb2p posb3p u1p;
-global   DEGtoRAD RADtoDEG z;
+global   cahat1 cahat2 cahat3 cbhat1 cbhat2 cbhat3 e1 e2 e3 e4 posa1 posa2 posa3 posb1 posb2 posb3 u1;
+global   ke pe u2 u3 cahat1p cahat2p cahat3p cbhat1p cbhat2p cbhat3p e1p e2p e3p e4p posa1p posa2p posa3p posb1p posb2p posb3p u1p;
+global   DEGtoRAD RADtoDEG z t_da t_db Encode;
 global   TINITIAL TFINAL INTEGSTP PRINTINT ABSERR RELERR;
 
 % Evaluate output quantities
 ke = 0.5*ida11*u1^2 + 0.5*ida22*u2^2 + 0.5*ida33*u3^2 + 0.5*idb22*z(22)^2*u3^2 + 0.5*idb33*z(23)^2*u3^2 + 0.5*idb11*z(12)*u1*(z(12)*u1+2*z(18)*u2) + 0.5*idb11*z(18)*u2*(z(18)*u2+2*z(21)*u3) + 0.5*idb11*z(21)*u3*(z(21)*u3+2*z(12)*u1) + 0.5*idb22*z(19)*u2*(z(19)*u2+2*z(22)*u3) + 0.5*idb33*z(15)*u1*(z(15)*u1+2*z(23)*u3) + 0.5*idb22*z(14)*u1*(z(14)*u1-2*z(19)*u2-2*z(22)*u3) + 0.5*idb33*z(20)*u2*(z(20)*u2-2*z(15)*u1-2*z(23)*u3) + 0.5*mda*(z(28)^2*u1^2+z(28)^2*u2^2+(z(45)*u1+z(46)*u2+z(47)*u3)^2+(z(48)*u1+z(49)*u2+z(50)*u3)^2+2*z(2)*z(28)*u1*(z(45)*u1+z(46)*u2+z(47)*u3)+2*z(4)*z(28)*u2*(z(48)*u1+z(49)*u2+z(50)*u3)-2*z(1)*z(28)*u2*(z(45)*u1+z(46)*u2+z(47)*u3)-2*z(5)*z(28)*u1*(z(48)*u1+z(49)*u2+z(50)*u3)) - 0.5*mdb*(2*z(5)*(l1*u3+z(52)*u1)*(z(48)*u1+z(49)*u2+z(50)*u3)+2*z(1)*(l2*u3-z(51)*u2)*(z(45)*u1+z(46)*u2+z(47)*u3)+2*z(3)*(l1*u2-l2*u1)*(z(45)*u1+z(46)*u2+z(47)*u3)-(l1*u3+z(52)*u1)^2-(l1*u2-l2*u1)^2-(l2*u3-z(51)*u2)^2-(z(45)*u1+z(46)*u2+z(47)*u3)^2-(z(48)*u1+z(49)*u2+z(50)*u3)^2-2*z(2)*(l1*u3+z(52)*u1)*(z(45)*u1+z(46)*u2+z(47)*u3)-2*z(4)*(l2*u3-z(51)*u2)*(z(48)*u1+z(49)*u2+z(50)*u3)-2*z(6)*(l1*u2-l2*u1)*(z(48)*u1+z(49)*u2+z(50)*u3));
 pe = 9.810000000000001*mda*posa3 + 9.810000000000001*mdb*posb3;
 
-Output(1)=ke+pe;
-Output(2)=((-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(51)*u2-l2*u3)*z(4)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(51)*u2-l2*u3)*z(1)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(l1*u3+z(52)*u1)*z(5)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(l1*u3+z(52)*u1)*z(2)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(l2*u1-l1*u2)*z(6)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(l2*u1-l1*u2)*z(3)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(54)*u2+z(55)*u3-z(53)*u1)*z(31)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(54)*u2+z(55)*u3-z(53)*u1)*z(30)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(-z(56)*u1-z(57)*u2-z(58)*u3)*z(34)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(-z(56)*u1-z(57)*u2-z(58)*u3)*z(33)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(59)*u1+z(60)*u2+z(61)*u3)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(62)*u1+z(63)*u2+z(64)*u3));
-Output(3)=((z(51)*u2-l2*u3)*z(7)+(l1*u3+z(52)*u1)*z(8)+(l2*u1-l1*u2)*z(9)+(z(54)*u2+z(55)*u3-z(53)*u1)*z(32)+(-z(56)*u1-z(57)*u2-z(58)*u3)*z(35));
-figure(1),plot(T,ke+pe,'b.',T,ke,'r.',T,pe,'g.'),hold on
-figure(4),plot(T,atan2(2*(e4*e1+e2*e3),1-2*(e1^2+e2^2)),'.',T,asin(2*(e4*e2-e3*e1)),'.',T,atan2(2*(e4*e3+e1*e2),1-(e1^2+e2^2)),'.'),hold on
-figure(6),plot(T,Output(2),'.',T,Output(3),'.'),hold on
+Output(1)=ke+pe;  Output(2)=((-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(51)*u2-l2*u3)*z(4)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(51)*u2-l2*u3)*z(1)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(l1*u3+z(52)*u1)*z(5)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(l1*u3+z(52)*u1)*z(2)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(l2*u1-l1*u2)*z(6)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(l2*u1-l1*u2)*z(3)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(54)*u2+z(55)*u3-z(53)*u1)*z(31)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(54)*u2+z(55)*u3-z(53)*u1)*z(30)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(-z(56)*u1-z(57)*u2-z(58)*u3)*z(34)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(-z(56)*u1-z(57)*u2-z(58)*u3)*z(33)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(59)*u1+z(60)*u2+z(61)*u3)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(62)*u1+z(63)*u2+z(64)*u3));  Output(3)=((z(51)*u2-l2*u3)*z(7)+(l1*u3+z(52)*u1)*z(8)+(l2*u1-l1*u2)*z(9)+(z(54)*u2+z(55)*u3-z(53)*u1)*z(32)+(-z(56)*u1-z(57)*u2-z(58)*u3)*z(35));  Output(4)=e1;  Output(5)=e2;  Output(6)=e3;  Output(7)=e4;  Output(8)=u1;  Output(9)=cahat1;  Output(10)=cahat2;  Output(11)=cahat3;  Output(12)=cbhat1;  Output(13)=cbhat2;  Output(14)=cbhat3;
+FileIdentifier = fopen('all');
+WriteOutput( 1,                 Output(1:14) );
+WriteOutput( FileIdentifier(1), Output(1:14) );
+t_da(1,1) = z(1);
+t_da(1,2) = z(4);
+t_da(1,3) = z(7);
+t_da(1,4) = 0;
+t_da(1,5) = z(2);
+t_da(1,6) = z(5);
+t_da(1,7) = z(8);
+t_da(1,8) = 0;
+t_da(1,9) = z(3);
+t_da(1,10) = z(6);
+t_da(1,11) = z(9);
+t_da(1,12) = 0;
+t_da(1,13) = posa1;
+t_da(1,14) = posa2;
+t_da(1,15) = posa3;
+t_da(1,16) = 1;
+t_db(1,1) = z(30);
+t_db(1,2) = z(31);
+t_db(1,3) = z(32);
+t_db(1,4) = 0;
+t_db(1,5) = z(33);
+t_db(1,6) = z(34);
+t_db(1,7) = z(35);
+t_db(1,8) = 0;
+t_db(1,9) = z(36);
+t_db(1,10) = z(37);
+t_db(1,11) = z(38);
+t_db(1,12) = 0;
+t_db(1,13) = posb1;
+t_db(1,14) = posb2;
+t_db(1,15) = posb3;
+t_db(1,16) = 1;
+
+Encode(1) = 0.0;
+Encode(2) = 0.0;
+
+
+
+
+%===========================================================================
+function WriteOutput( fileIdentifier, Output )
+numberOfOutputQuantities = length( Output );
+if numberOfOutputQuantities > 0,
+  for i=1:numberOfOutputQuantities,
+    fprintf( fileIdentifier, ' %- 14.6E', Output(i) );
+  end
+  fprintf( fileIdentifier, '\n' );
+end
+
+
+
+%===========================================================================
+% mdlTerminate: Perform end of simulation tasks and set sys=[]
+%===========================================================================
+function sys = mdlTerminate(T,VAR,u)
+FileIdentifier = fopen('all');
+fclose( FileIdentifier(1) );
+fprintf( 1, '\n Output is in the file TwinDisks.1\n' );
+fprintf( 1, '\n To load and plot columns 1 and 2 with a solid line and columns 1 and 3 with a dashed line, enter:\n' );
+fprintf( 1, '    someName = load( ''TwinDisks.1'' );\n' );
+fprintf( 1, '    plot( someName(:,1), someName(:,2), ''-'', someName(:,1), someName(:,3), ''--'' )\n\n' );
+sys = [];
+
+
+
+%===========================================================================
+% Sfunction: System/Simulink function from standard template
+%===========================================================================
+function [sys,x0,str,ts] = Sfunction(t,x,u,flag)
+switch flag,
+  case 0,  [sys,x0,str,ts] = mdlInitializeSizes;    % Initialization of sys, initial state x0, state ordering string str, and sample times ts
+  case 1,  sys = mdlDerivatives(t,x,u);             % Calculate the derivatives of continuous states and store them in sys
+  case 2,  sys = mdlUpdate(t,x,u);                  % Update discrete states x(n+1) in sys
+  case 3,  sys = mdlOutputs(t,x,u);                 % Calculate outputs in sys
+  case 4,  sys = mdlGetTimeOfNextVarHit(t,x,u);     % Return next sample time for variable-step in sys
+  case 9,  sys = mdlTerminate(t,x,u);               % Perform end of simulation tasks and set sys=[]
+  otherwise error(['Unhandled flag = ',num2str(flag)]);
+end
+
+
+
+%===========================================================================
+% mdlInitializeSizes: Return the sizes, initial state VAR, and sample times ts
+%===========================================================================
+function [sys,VAR,stateOrderingStrings,timeSampling] = mdlInitializeSizes
+sizes = simsizes;             % Call simsizes to create a sizes structure
+sizes.NumContStates  = 17;    % sys(1) is the number of continuous states
+sizes.NumDiscStates  = 0;     % sys(2) is the number of discrete states
+sizes.NumOutputs     = 14;    % sys(3) is the number of outputs
+sizes.NumInputs      = 0;     % sys(4) is the number of inputs
+sizes.DirFeedthrough = 1;     % sys(6) is 1, and allows for the output to be a function of the input
+sizes.NumSampleTimes = 1;     % sys(7) is the number of samples times (the number of rows in ts)
+sys = simsizes(sizes);        % Convert it to a sizes array
+stateOrderingStrings = [];
+timeSampling         = [0 0]; % m-by-2 matrix containing the sample times
+OpenOutputFilesAndWriteHeadings
+VAR = ReadUserInput
