@@ -50,8 +50,8 @@ posb3                           =  0;                      % UNITS              
 u1                              =  2;                      % UNITS               Initial Value
 
 TINITIAL                        =  0.0;                    % UNITS               Initial Time
-TFINAL                          =  1.0;                    % UNITS               Final Time
-INTEGSTP                        =  0.1;                    % UNITS               Integration Step
+TFINAL                          =  5.0;                    % UNITS               Final Time
+INTEGSTP                        =  0.01;                    % UNITS               Integration Step
 PRINTINT                        =  1;                      % Positive Integer    Print-Integer
 ABSERR                          =  1.0E-08;                %                     Absolute Error
 RELERR                          =  1.0E-07 ;               %                     Relative Error
@@ -188,7 +188,6 @@ while 1,
   VAR = VarOdeArray( length(TimeOdeArray), : );
   PrintCounter = PrintCounter - 1;
 end
-mdlTerminate(T,VAR,0);
 
 
 
@@ -508,49 +507,3 @@ end
 
 
 
-%===========================================================================
-% mdlTerminate: Perform end of simulation tasks and set sys=[]
-%===========================================================================
-function sys = mdlTerminate(T,VAR,u)
-FileIdentifier = fopen('all');
-fclose( FileIdentifier(1) );
-fprintf( 1, '\n Output is in the file TwinDisks.1\n' );
-fprintf( 1, '\n To load and plot columns 1 and 2 with a solid line and columns 1 and 3 with a dashed line, enter:\n' );
-fprintf( 1, '    someName = load( ''TwinDisks.1'' );\n' );
-fprintf( 1, '    plot( someName(:,1), someName(:,2), ''-'', someName(:,1), someName(:,3), ''--'' )\n\n' );
-sys = [];
-
-
-
-%===========================================================================
-% Sfunction: System/Simulink function from standard template
-%===========================================================================
-function [sys,x0,str,ts] = Sfunction(t,x,u,flag)
-switch flag,
-  case 0,  [sys,x0,str,ts] = mdlInitializeSizes;    % Initialization of sys, initial state x0, state ordering string str, and sample times ts
-  case 1,  sys = mdlDerivatives(t,x,u);             % Calculate the derivatives of continuous states and store them in sys
-  case 2,  sys = mdlUpdate(t,x,u);                  % Update discrete states x(n+1) in sys
-  case 3,  sys = mdlOutputs(t,x,u);                 % Calculate outputs in sys
-  case 4,  sys = mdlGetTimeOfNextVarHit(t,x,u);     % Return next sample time for variable-step in sys
-  case 9,  sys = mdlTerminate(t,x,u);               % Perform end of simulation tasks and set sys=[]
-  otherwise error(['Unhandled flag = ',num2str(flag)]);
-end
-
-
-
-%===========================================================================
-% mdlInitializeSizes: Return the sizes, initial state VAR, and sample times ts
-%===========================================================================
-function [sys,VAR,stateOrderingStrings,timeSampling] = mdlInitializeSizes
-sizes = simsizes;             % Call simsizes to create a sizes structure
-sizes.NumContStates  = 17;    % sys(1) is the number of continuous states
-sizes.NumDiscStates  = 0;     % sys(2) is the number of discrete states
-sizes.NumOutputs     = 14;    % sys(3) is the number of outputs
-sizes.NumInputs      = 0;     % sys(4) is the number of inputs
-sizes.DirFeedthrough = 1;     % sys(6) is 1, and allows for the output to be a function of the input
-sizes.NumSampleTimes = 1;     % sys(7) is the number of samples times (the number of rows in ts)
-sys = simsizes(sizes);        % Convert it to a sizes array
-stateOrderingStrings = [];
-timeSampling         = [0 0]; % m-by-2 matrix containing the sample times
-OpenOutputFilesAndWriteHeadings
-VAR = ReadUserInput
