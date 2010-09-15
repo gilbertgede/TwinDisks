@@ -1,6 +1,6 @@
 function TwinDisks
 SolveOrdinaryDifferentialEquations
-% File  TwinDisks.m  created by Autolev 4.1 on Tue Sep 14 13:21:52 2010
+% File  TwinDisks.m  created by Autolev 4.1 on Wed Sep 01 23:10:09 2010
 
 
 %===========================================================================
@@ -45,12 +45,12 @@ posa1                           =  0;                      % UNITS              
 posa2                           =  0.07071067811865475;    % UNITS               Initial Value
 posa3                           =  0.07071067811865477;    % UNITS               Initial Value
 posb1                           = -0.1;                    % UNITS               Initial Value
-posb2                           =  0.07071067811865475;    % UNITS               Initial Value
-posb3                           =  0.07071067811865477;    % UNITS               Initial Value
-u1                              =  3;                      % UNITS               Initial Value
+posb2                           =  0;                      % UNITS               Initial Value
+posb3                           =  0;                      % UNITS               Initial Value
+u1                              =  2;                      % UNITS               Initial Value
 
 TINITIAL                        =  0.0;                    % UNITS               Initial Time
-TFINAL                          =  2.0;                    % UNITS               Final Time
+TFINAL                          =  5.0;                    % UNITS               Final Time
 INTEGSTP                        =  0.01;                    % UNITS               Integration Step
 PRINTINT                        =  1;                      % Positive Integer    Print-Integer
 ABSERR                          =  1.0E-08;                %                     Absolute Error
@@ -149,11 +149,11 @@ VAR(17) = u1;
 %===========================================================================
 function OpenOutputFilesAndWriteHeadings
 FileIdentifier = fopen('TwinDisks.1', 'wt');   if( FileIdentifier == -1 ) error('Error: unable to open file TwinDisks.1'); end
-fprintf( 1,             '%%       t             ke             pe            ke+pe     dot(v_bhat_n>, dot(v_bhat_n>,       e1             e2             e3             e4             u1           cahat1         cahat2         cahat3         cbhat1         cbhat2         cbhat3     dot(w_diska_n> dot(w_diska_n> dot(w_diska_n>\n' );
-fprintf( 1,             '%%    (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)\n\n' );
+fprintf( 1,             '%%     ke+pe     dot(v_bhat_n>, dot(v_bhat_n>,       e1             e2             e3             e4             u1           cahat1         cahat2         cahat3         cbhat1         cbhat2         cbhat3\n' );
+fprintf( 1,             '%%    (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)\n\n' );
 fprintf(FileIdentifier, '%% FILE: TwinDisks.1\n%%\n' );
-fprintf(FileIdentifier, '%%       t             ke             pe            ke+pe     dot(v_bhat_n>, dot(v_bhat_n>,       e1             e2             e3             e4             u1           cahat1         cahat2         cahat3         cbhat1         cbhat2         cbhat3     dot(w_diska_n> dot(w_diska_n> dot(w_diska_n>\n' );
-fprintf(FileIdentifier, '%%    (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)\n\n' );
+fprintf(FileIdentifier, '%%     ke+pe     dot(v_bhat_n>, dot(v_bhat_n>,       e1             e2             e3             e4             u1           cahat1         cahat2         cahat3         cbhat1         cbhat2         cbhat3\n' );
+fprintf(FileIdentifier, '%%    (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)\n\n' );
 
 
 
@@ -188,10 +188,6 @@ while 1,
   VAR = VarOdeArray( length(TimeOdeArray), : );
   PrintCounter = PrintCounter - 1;
 end
-mdlTerminate(T,VAR,0);
-data = load('TwinDisks.1');
-plot(data(:,1),data(:,11))
-
 
 
 
@@ -456,10 +452,10 @@ global   TINITIAL TFINAL INTEGSTP PRINTINT ABSERR RELERR;
 ke = 0.5*ida11*u1^2 + 0.5*ida22*u2^2 + 0.5*ida33*u3^2 + 0.5*idb22*z(22)^2*u3^2 + 0.5*idb33*z(23)^2*u3^2 + 0.5*idb11*z(12)*u1*(z(12)*u1+2*z(18)*u2) + 0.5*idb11*z(18)*u2*(z(18)*u2+2*z(21)*u3) + 0.5*idb11*z(21)*u3*(z(21)*u3+2*z(12)*u1) + 0.5*idb22*z(19)*u2*(z(19)*u2+2*z(22)*u3) + 0.5*idb33*z(15)*u1*(z(15)*u1+2*z(23)*u3) + 0.5*idb22*z(14)*u1*(z(14)*u1-2*z(19)*u2-2*z(22)*u3) + 0.5*idb33*z(20)*u2*(z(20)*u2-2*z(15)*u1-2*z(23)*u3) + 0.5*mda*(z(28)^2*u1^2+z(28)^2*u2^2+(z(45)*u1+z(46)*u2+z(47)*u3)^2+(z(48)*u1+z(49)*u2+z(50)*u3)^2+2*z(2)*z(28)*u1*(z(45)*u1+z(46)*u2+z(47)*u3)+2*z(4)*z(28)*u2*(z(48)*u1+z(49)*u2+z(50)*u3)-2*z(1)*z(28)*u2*(z(45)*u1+z(46)*u2+z(47)*u3)-2*z(5)*z(28)*u1*(z(48)*u1+z(49)*u2+z(50)*u3)) - 0.5*mdb*(2*z(5)*(l1*u3+z(52)*u1)*(z(48)*u1+z(49)*u2+z(50)*u3)+2*z(1)*(l2*u3-z(51)*u2)*(z(45)*u1+z(46)*u2+z(47)*u3)+2*z(3)*(l1*u2-l2*u1)*(z(45)*u1+z(46)*u2+z(47)*u3)-(l1*u3+z(52)*u1)^2-(l1*u2-l2*u1)^2-(l2*u3-z(51)*u2)^2-(z(45)*u1+z(46)*u2+z(47)*u3)^2-(z(48)*u1+z(49)*u2+z(50)*u3)^2-2*z(2)*(l1*u3+z(52)*u1)*(z(45)*u1+z(46)*u2+z(47)*u3)-2*z(4)*(l2*u3-z(51)*u2)*(z(48)*u1+z(49)*u2+z(50)*u3)-2*z(6)*(l1*u2-l2*u1)*(z(48)*u1+z(49)*u2+z(50)*u3));
 pe = 9.810000000000001*mda*posa3 + 9.810000000000001*mdb*posb3;
 
-Output(1)=T;  Output(2)=ke;  Output(3)=pe;  Output(4)=ke+pe;  Output(5)=((-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(51)*u2-l2*u3)*z(4)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(51)*u2-l2*u3)*z(1)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(l1*u3+z(52)*u1)*z(5)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(l1*u3+z(52)*u1)*z(2)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(l2*u1-l1*u2)*z(6)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(l2*u1-l1*u2)*z(3)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(54)*u2+z(55)*u3-z(53)*u1)*z(31)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(54)*u2+z(55)*u3-z(53)*u1)*z(30)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(-z(56)*u1-z(57)*u2-z(58)*u3)*z(34)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(-z(56)*u1-z(57)*u2-z(58)*u3)*z(33)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(59)*u1+z(60)*u2+z(61)*u3)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(62)*u1+z(63)*u2+z(64)*u3));  Output(6)=((z(51)*u2-l2*u3)*z(7)+(l1*u3+z(52)*u1)*z(8)+(l2*u1-l1*u2)*z(9)+(z(54)*u2+z(55)*u3-z(53)*u1)*z(32)+(-z(56)*u1-z(57)*u2-z(58)*u3)*z(35));  Output(7)=e1;  Output(8)=e2;  Output(9)=e3;  Output(10)=e4;  Output(11)=u1;  Output(12)=cahat1;  Output(13)=cahat2;  Output(14)=cahat3;  Output(15)=cbhat1;  Output(16)=cbhat2;  Output(17)=cbhat3;  Output(18)=u1;  Output(19)=u2;  Output(20)=u3;
+Output(1)=ke+pe;  Output(2)=((-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(51)*u2-l2*u3)*z(4)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(51)*u2-l2*u3)*z(1)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(l1*u3+z(52)*u1)*z(5)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(l1*u3+z(52)*u1)*z(2)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(l2*u1-l1*u2)*z(6)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(l2*u1-l1*u2)*z(3)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(54)*u2+z(55)*u3-z(53)*u1)*z(31)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(54)*u2+z(55)*u3-z(53)*u1)*z(30)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(-z(56)*u1-z(57)*u2-z(58)*u3)*z(34)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(-z(56)*u1-z(57)*u2-z(58)*u3)*z(33)+(l1*z(4)+l2*z(5)+z(37)*z(43)+z(6)*(l3-z(28)))*(z(59)*u1+z(60)*u2+z(61)*u3)+(-l1*z(1)-l2*z(2)-z(36)*z(43)-z(3)*(l3-z(28)))*(z(62)*u1+z(63)*u2+z(64)*u3));  Output(3)=((z(51)*u2-l2*u3)*z(7)+(l1*u3+z(52)*u1)*z(8)+(l2*u1-l1*u2)*z(9)+(z(54)*u2+z(55)*u3-z(53)*u1)*z(32)+(-z(56)*u1-z(57)*u2-z(58)*u3)*z(35));  Output(4)=e1;  Output(5)=e2;  Output(6)=e3;  Output(7)=e4;  Output(8)=u1;  Output(9)=cahat1;  Output(10)=cahat2;  Output(11)=cahat3;  Output(12)=cbhat1;  Output(13)=cbhat2;  Output(14)=cbhat3;
 FileIdentifier = fopen('all');
-WriteOutput( 1,                 Output(1:20) );
-WriteOutput( FileIdentifier(1), Output(1:20) );
+WriteOutput( 1,                 Output(1:14) );
+WriteOutput( FileIdentifier(1), Output(1:14) );
 t_da(1,1) = z(1);
 t_da(1,2) = z(4);
 t_da(1,3) = z(7);
@@ -511,49 +507,3 @@ end
 
 
 
-%===========================================================================
-% mdlTerminate: Perform end of simulation tasks and set sys=[]
-%===========================================================================
-function sys = mdlTerminate(T,VAR,u)
-FileIdentifier = fopen('all');
-fclose( FileIdentifier(1) );
-fprintf( 1, '\n Output is in the file TwinDisks.1\n' );
-fprintf( 1, '\n To load and plot columns 1 and 2 with a solid line and columns 1 and 3 with a dashed line, enter:\n' );
-fprintf( 1, '    someName = load( ''TwinDisks.1'' );\n' );
-fprintf( 1, '    plot( someName(:,1), someName(:,2), ''-'', someName(:,1), someName(:,3), ''--'' )\n\n' );
-sys = [];
-
-
-
-%===========================================================================
-% Sfunction: System/Simulink function from standard template
-%===========================================================================
-function [sys,x0,str,ts] = Sfunction(t,x,u,flag)
-switch flag,
-  case 0,  [sys,x0,str,ts] = mdlInitializeSizes;    % Initialization of sys, initial state x0, state ordering string str, and sample times ts
-  case 1,  sys = mdlDerivatives(t,x,u);             % Calculate the derivatives of continuous states and store them in sys
-  case 2,  sys = mdlUpdate(t,x,u);                  % Update discrete states x(n+1) in sys
-  case 3,  sys = mdlOutputs(t,x,u);                 % Calculate outputs in sys
-  case 4,  sys = mdlGetTimeOfNextVarHit(t,x,u);     % Return next sample time for variable-step in sys
-  case 9,  sys = mdlTerminate(t,x,u);               % Perform end of simulation tasks and set sys=[]
-  otherwise error(['Unhandled flag = ',num2str(flag)]);
-end
-
-
-
-%===========================================================================
-% mdlInitializeSizes: Return the sizes, initial state VAR, and sample times ts
-%===========================================================================
-function [sys,VAR,stateOrderingStrings,timeSampling] = mdlInitializeSizes
-sizes = simsizes;             % Call simsizes to create a sizes structure
-sizes.NumContStates  = 17;    % sys(1) is the number of continuous states
-sizes.NumDiscStates  = 0;     % sys(2) is the number of discrete states
-sizes.NumOutputs     = 20;    % sys(3) is the number of outputs
-sizes.NumInputs      = 0;     % sys(4) is the number of inputs
-sizes.DirFeedthrough = 1;     % sys(6) is 1, and allows for the output to be a function of the input
-sizes.NumSampleTimes = 1;     % sys(7) is the number of samples times (the number of rows in ts)
-sys = simsizes(sizes);        % Convert it to a sizes array
-stateOrderingStrings = [];
-timeSampling         = [0 0]; % m-by-2 matrix containing the sample times
-OpenOutputFilesAndWriteHeadings
-VAR = ReadUserInput
