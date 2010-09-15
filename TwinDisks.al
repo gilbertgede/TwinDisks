@@ -94,11 +94,13 @@ input e4 = cos(q1/2)*cos(q2/2)*cos(q3/2)+sin(q1/2)*sin(q2/2)*sin(q3/2)
 input e1 = sin(q1/2)*cos(q2/2)*cos(q3/2)-cos(q1/2)*sin(q2/2)*sin(q3/2)
 input e2 = cos(q1/2)*sin(q2/2)*cos(q3/2)+sin(q1/2)*cos(q2/2)*sin(q3/2)
 input e3 = cos(q1/2)*cos(q2/2)*sin(q3/2)-sin(q1/2)*sin(q2/2)*cos(q3/2)
-input u1 = 2
+input u1 = 1
 
 inputVecto = [dot(p_ahat_diskao>,n1>), dot(p_ahat_diskao>,n2>), &
-	dot(p_ahat_diskao>,n3>), dot(p_diskao_diskbo>,n1>), &
-	dot(p_diskao_diskbo>,n2>), dot(p_diskao_diskbo>,n3>), &
+	dot(p_ahat_diskao>,n3>), & 
+	dot(p_diskao_diskbo>,n1>) + dot(p_ahat_diskao>,n1>), &
+	dot(p_diskao_diskbo>,n2>) + dot(p_ahat_diskao>,n2>), &
+	dot(p_diskao_diskbo>,n3>) + dot(p_ahat_diskao>,n3>), &
 	0, 0, 0, dot(p_ahat_bhat>,n1>), dot(p_ahat_bhat>,n2>), 0]
 
 explicit(inputVecto)
@@ -121,8 +123,9 @@ input cbhat1 = inputVector[10], cbhat2 = inputVector[11], cbhat3 = 0
 
 
 
-output ke+pe, dot(v_bhat_n>,cross(p_ahat_bhat>,n3>)), dot(v_bhat_n>,n3>), &
-	e1,e2,e3,e4,u1,cahat1,cahat2,cahat3,cbhat1,cbhat2,cbhat3
+output t,ke,pe,ke+pe, dot(v_bhat_n>,cross(p_ahat_bhat>,n3>)), dot(v_bhat_n>,n3>), &
+	e1,e2,e3,e4,u1,cahat1,cahat2,cahat3,cbhat1,cbhat2,cbhat3, &
+	dot(w_diska_n>,diska1>), dot(w_diska_n>,diska2>), dot(w_diska_n>,diska3>)
 encode t_da,t_db
 
 
