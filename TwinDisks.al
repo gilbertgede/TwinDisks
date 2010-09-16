@@ -1,5 +1,5 @@
 degrees off
-autoz on
+autoz off
 
 Newtonian N
 Bodies DiskA, DiskB
@@ -31,6 +31,8 @@ v_ahat_n> = 0>
 v_diskao_n> = v_ahat_n> + cross(w_diska_n>,p_ahat_diskao>)
 v_diskbo_n> = v_diskao_n> + cross(w_diska_n>,p_diskao_diskbo>)
 v_bhat_n> = v_diskbo_n> + cross(w_diska_n>,p_diskbo_bhat>)
+
+stop
 
 dependent[1] = dot(v_bhat_n>,cross(unitvec(p_ahat_bhat>),n3>))
 dependent[2] = dot(v_bhat_n>,n3>)
@@ -130,4 +132,4 @@ encode t_da,t_db
 
 
 code dynamics() TwinDisks.m
-exit
+%exit
