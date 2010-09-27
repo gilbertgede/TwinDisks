@@ -1,0 +1,19 @@
+clear all; close all;
+
+
+for i = 0.1:.1:20
+    TwinDisksEig(i,tfinal)
+    data = load('TwinDisksEig.1');
+    time = data(:,1);
+    spin = data(:,46);
+    speed = data(:,18);
+    ind = find(spin > 2*pi,1);
+    if ind==[]
+        spin = spin(2:end);
+        ind = find(spin > 0 && speed);
+    else
+        speed = speed(1:ind);
+        time = time(1:ind);
+    end
+    figure(1), plot3(i*ones(length(spin,1)),time/time(end),speed/i), hold on
+end
