@@ -1,7 +1,7 @@
 clear all; close all;
 
 
-for i = .1:.1:20
+for i = .1:.1:6
     tfina = 4*pi/i;
     TwinDisksEig(i,tfina)
     data = load('TwinDisksEig.1');

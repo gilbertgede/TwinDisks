@@ -21,27 +21,28 @@ l                               =  1;                      % UNITS              
 m                               =  2;                      % UNITS               Constant
 rad                             =  .1;                     % UNITS               Constant
 
+
 cahat1                          =  0;                      % UNITS               Initial Value
 cahat2                          =  0;                      % UNITS               Initial Value
 cahat3                          =  0;                      % UNITS               Initial Value
 cbhat1                          = -0.1732050807568877;     % UNITS               Initial Value
 cbhat2                          =  0;                      % UNITS               Initial Value
 cbhat3                          =  0;                      % UNITS               Initial Value
-e1                              =  0;                      % UNITS               Initial Value
-e2                              =  0.2588190451025208;     % UNITS               Initial Value
+e1                              =  0.3826834323650898;                      % UNITS               Initial Value
+e2                              =  0;     % UNITS               Initial Value
 e3                              =  0;                      % UNITS               Initial Value
-e4                              =  0.9659258262890683;     % UNITS               Initial Value
+e4                              =  0.9238795325112867;     % UNITS               Initial Value
 posa1                           = -0.08660254037844388;    % UNITS               Initial Value
 posa2                           =  0;                      % UNITS               Initial Value
 posa3                           =  0.05000000000000002;    % UNITS               Initial Value
 posb1                           = -0.1732050807568877;     % UNITS               Initial Value
 posb2                           =  0;                      % UNITS               Initial Value
 posb3                           =  0.1;                    % UNITS               Initial Value
-u1                              =  1;                      % UNITS               Initial Value
+u1                              =  3;                      % UNITS               Initial Value
 
 TINITIAL                        =  0.0;                    % UNITS               Initial Time
 TFINAL                          =  1.0;                    % UNITS               Final Time
-INTEGSTP                        =  0.1;                    % UNITS               Integration Step
+INTEGSTP                        =  0.01;                    % UNITS               Integration Step
 PRINTINT                        =  1;                      % Positive Integer    Print-Integer
 ABSERR                          =  1.0E-08;                %                     Absolute Error
 RELERR                          =  1.0E-07 ;               %                     Relative Error
@@ -130,9 +131,9 @@ while 1,
 end
 mdlTerminate(T,VAR,0);
 data = load( 'TwinDisks.1' );
-figure(1), plot(data(:,1),data(:,2),data(:,1),data(:,3),data(:,1),data(:,4))
+% figure(1), plot(data(:,1),data(:,2),data(:,1),data(:,3),data(:,1),data(:,4))
 figure(2), plot(data(:,1),data(:,18),data(:,1),data(:,19),data(:,1),data(:,20))
-figure(3), plot(data(:,1),data(:,7),data(:,1),data(:,8),data(:,1),data(:,9),data(:,1),data(:,10),data(:,1),data(:,11))
+% figure(3), plot(data(:,1),data(:,7),data(:,1),data(:,8),data(:,1),data(:,9),data(:,1),data(:,10),data(:,1),data(:,11))
 
 
 
@@ -852,7 +853,7 @@ a53 = z(359);
 a54 = z(458);
 a55 = 0.5*z(552);
 Amatr = [a11,a12,a13,a14,a15;a21,a22,a23,a24,a25;a31,a32,a33,a34,a35;a41,a42,a43,a44,a45;a51,a52,a53,a54,a55];
-eig(Amatr)
+% eig(Amatr)
 
 Output(1)=T;  Output(2)=ke;  Output(3)=pe;  Output(4)=ke+pe;  Output(5)=(-(z(22)*z(1)+z(3)*z(14)-z(2)*z(20))*z(14)*u2*z(4)-(z(5)*z(20)-z(22)*z(4)-z(6)*z(14))*z(14)*u2*z(1)+(z(22)*z(1)+z(3)*z(14)-z(2)*z(20))*(z(14)*u1-z(22)*u3)*z(5)+(z(5)*z(20)-z(22)*z(4)-z(6)*z(14))*(z(14)*u1-z(22)*u3)*z(2)+(z(22)*z(1)+z(3)*z(14)-z(2)*z(20))*z(22)*u2*z(6)+(z(5)*z(20)-z(22)*z(4)-z(6)*z(14))*z(22)*u2*z(3)-(z(22)*z(1)+z(3)*z(14)-z(2)*z(20))*z(20)*u3*z(4)-(z(5)*z(20)-z(22)*z(4)-z(6)*z(14))*z(20)*u3*z(1)+(z(22)*z(1)+z(3)*z(14)-z(2)*z(20))*z(20)*u1*z(6)+(z(5)*z(20)-z(22)*z(4)-z(6)*z(14))*z(20)*u1*z(3)+(z(5)*z(20)-z(22)*z(4)-z(6)*z(14))*(z(29)*u1+z(30)*u2+z(31)*u3)+(z(22)*z(1)+z(3)*z(14)-z(2)*z(20))*(z(32)*u1+z(33)*u2+z(34)*u3));  Output(6)=(-z(14)*u2*z(7)+(z(14)*u1-z(22)*u3)*z(8)+z(22)*u2*z(9)-z(20)*u3*z(7)+z(20)*u1*z(9));  Output(7)=e1;  Output(8)=e2;  Output(9)=e3;  Output(10)=e4;  Output(11)=u1;  Output(12)=cahat1;  Output(13)=cahat2;  Output(14)=cahat3;  Output(15)=cbhat1;  Output(16)=cbhat2;  Output(17)=cbhat3;  Output(18)=u1;  Output(19)=u2;  Output(20)=u3;
 FileIdentifier = fopen('all');

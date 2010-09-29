@@ -867,7 +867,7 @@ a55 = 0.5*z(550);
 
 Output(1)=T;  Output(2)=ke;  Output(3)=pe;  Output(4)=ke+pe;  Output(5)=(-(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*z(15)*u2*z(5)-(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*z(15)*u2*z(2)+(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*(z(15)*u1-z(23)*u3)*z(6)+(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*(z(15)*u1-z(23)*u3)*z(3)+(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*z(23)*u2*z(7)+(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*z(23)*u2*z(4)-(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*z(21)*u3*z(5)-(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*z(21)*u3*z(2)+(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*z(21)*u1*z(7)+(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*z(21)*u1*z(4)+(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*(z(30)*u1+z(31)*u2+z(32)*u3)+(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*(z(33)*u1+z(34)*u2+z(35)*u3));  Output(6)=(-z(15)*u2*z(8)+(z(15)*u1-z(23)*u3)*z(9)+z(23)*u2*z(10)-z(21)*u3*z(8)+z(21)*u1*z(10));  Output(7)=e1;  Output(8)=e2;  Output(9)=e3;  Output(10)=e4;  Output(11)=u1;  Output(12)=cahat1;  Output(13)=cahat2;  Output(14)=cahat3;  Output(15)=cbhat1;  Output(16)=cbhat2;  Output(17)=cbhat3;  Output(18)=u1;  Output(19)=u2;  Output(20)=u3;  Output(21)=a11;  Output(22)=a12;  Output(23)=a13;  Output(24)=a14;  Output(25)=a15;  Output(26)=a21;  Output(27)=a22;  Output(28)=a23;  Output(29)=a24;  Output(30)=a25;  Output(31)=a31;  Output(32)=a32;  Output(33)=a33;  Output(34)=a34;  Output(35)=a35;  Output(36)=a41;  Output(37)=a42;  Output(38)=a43;  Output(39)=a44;  Output(40)=a45;  Output(41)=a51;  Output(42)=a52;  Output(43)=a53;  Output(44)=a54;  Output(45)=a55;  Output(46)=q1;  Output(47)=q2;  Output(48)=q3;
 FileIdentifier = fopen('all');
-WriteOutput( 1,                 Output(1:48) );
+% WriteOutput( 1,                 Output(1:48) );
 WriteOutput( FileIdentifier(1), Output(1:48) );
 
 
