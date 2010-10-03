@@ -1,0 +1,61 @@
+degrees off
+autoz on
+Newtonian N
+Bodies DiskA, DiskB
+bodies FakeA, FakeB
+points ahat,bhat
+points fakeahat, fakebhat
+motionvariables' u', fakeu{6}'
+variables e{4}',posa{3}',posb{3}',ke,pe,cahat{3}',cbhat{3}', q{3}'
+variables u{6}
+variables aforce{3},bforce{3}
+variables fakee{4}'
+constants l,rad,a,qq{3}, gamma
+l = sqrt(2) * rad * gamma
+a = pi/2
+mass diska = m
+mass diskb = m
+inertia diska,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+inertia diskb,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+mass fakea = m
+mass fakeb = m
+inertia fakea,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+inertia fakeb,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+dircos(N,DiskA,Euler,e1,e2,e3,e4)
+dircos(DiskA,DiskB,body123,pi/2,0,0)
+dircos(N,fakeA,Euler,fakee1,fakee2,fakee3,fakee4)
+dircos(fakeA,fakeB,body123,pi/2,0,0)
+%gamma is l/sqrt(2)/r
+p_diskao_ahat> = rad * unitvec(dot(diska3>,n3>)*diska3>-n3>)
+p_diskbo_bhat> = rad * unitvec(dot(diskb3>,n3>)*diskb3>-n3>)
+p_diskao_diskbo> = -l * diska1>
+p_fakeao_fakeahat> = rad * unitvec(dot(fakea3>,n3>)*fakea3>-n3>)
+p_fakebo_fakebhat> = rad * unitvec(dot(fakeb3>,n3>)*fakeb3>-n3>)
+p_fakeao_fakebo> = -l * fakea1>
+w_diska_n> = u * unitvec(p_ahat_bhat>)
+w_diskb_diska> = 0>
+w_fakea_n> = fakeu1 * fakea1> + fakeu2 * fakea2> + fakeu3 * fakea3>
+w_fakeb_fakea> = 0>
+kindiffs(N,DiskA,Euler,e1,e2,e3,e4)
+kindiffs(N,FakeA,Euler,fakee1,fakee2,fakee3,fakee4)
+v_ahat_n> = 0>
+v_diskao_n> = v_ahat_n> + cross(w_diska_n>,p_ahat_diskao>)
+v_diskbo_n> = v_diskao_n> + cross(w_diska_n>,p_diskao_diskbo>)
+v_bhat_n> = 0>
+v_fakeao_n> = fakeu4 * n1> + fakeu5 * n2> + fakeu6 * n3>
+v_fakebo_n> = v_fakeao_n> + cross(w_fakea_n>,p_fakeao_fakebo>)
+v_fakeahat_n> = v_fakeao_n> + cross(w_fakea_n>,p_fakeao_fakeahat>)
+v_fakebhat_n> = v_fakebo_n> + cross(w_fakea_n>,p_fakebo_fakebhat>)
+u1 = dot(w_diska_n>,diska1>)
+u2 = dot(w_diska_n>,diska2>)
+u3 = dot(w_diska_n>,diska3>)
+u4 = dot(v_ahat_n>, n1>)
+u5 = dot(v_ahat_n>, n2>)
+u6 = dot(v_ahat_n>, n3>)
+gravity(-9.81*n3>)
+force_fakeahat> = aforce1 * n1> + aforce2 * n2> + aforce3 * n3>
+force_fakebhat> = bforce1 * n1> + bforce2 * n2> + bforce3 * n3>
+%autoz on
+zee_not=[aforce1,aforce2,aforce3,bforce1,bforce2,bforce3]
+zero = fr() + frstar()
+solve(zero[1],u')

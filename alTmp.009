@@ -1,0 +1,148 @@
+degrees off
+autoz on
+Newtonian N
+Bodies DiskA, DiskB
+bodies FakeA, FakeB
+points ahat,bhat
+points fakeahat, fakebhat
+motionvariables' u', fakeu{6}'
+variables e{4}',posa{3}',posb{3}',ke,pe,cahat{3}',cbhat{3}', q{3}'
+variables u{6}
+variables aforce{3},bforce{3}
+variables fakee{4}'
+constants l,rad,a,qq{3}, gamma
+l = sqrt(2) * rad * gamma
+a = pi/2
+mass diska = m
+mass diskb = m
+inertia diska,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+inertia diskb,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+mass fakea = m
+mass fakeb = m
+inertia fakea,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+inertia fakeb,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+dircos(N,DiskA,Euler,e1,e2,e3,e4)
+dircos(DiskA,DiskB,body123,pi/2,0,0)
+dircos(N,fakeA,Euler,fakee1,fakee2,fakee3,fakee4)
+dircos(fakeA,fakeB,body123,pi/2,0,0)
+%gamma is l/sqrt(2)/r
+p_diskao_ahat> = rad * unitvec(dot(diska3>,n3>)*diska3>-n3>)
+p_diskbo_bhat> = rad * unitvec(dot(diskb3>,n3>)*diskb3>-n3>)
+p_diskao_diskbo> = -l * diska1>
+p_fakeao_fakeahat> = rad * unitvec(dot(fakea3>,n3>)*fakea3>-n3>)
+p_fakebo_fakebhat> = rad * unitvec(dot(fakeb3>,n3>)*fakeb3>-n3>)
+p_fakeao_fakebo> = -l * fakea1>
+w_diska_n> = u * unitvec(p_ahat_bhat>)
+w_diskb_diska> = 0>
+w_fakea_n> = fakeu1 * fakea1> + fakeu2 * fakea2> + fakeu3 * fakea3>
+w_fakeb_fakea> = 0>
+kindiffs(N,DiskA,Euler,e1,e2,e3,e4)
+kindiffs(N,FakeA,Euler,fakee1,fakee2,fakee3,fakee4)
+v_ahat_n> = 0>
+v_diskao_n> = v_ahat_n> + cross(w_diska_n>,p_ahat_diskao>)
+v_diskbo_n> = v_diskao_n> + cross(w_diska_n>,p_diskao_diskbo>)
+v_bhat_n> = 0>
+v_fakeao_n> = fakeu4 * n1> + fakeu5 * n2> + fakeu6 * n3>
+v_fakebo_n> = v_fakeao_n> + cross(w_fakea_n>,p_fakeao_fakebo>)
+v_fakeahat_n> = v_fakeao_n> + cross(w_fakea_n>,p_fakeao_fakeahat>)
+v_fakebhat_n> = v_fakebo_n> + cross(w_fakea_n>,p_fakebo_fakebhat>)
+u1 = dot(w_diska_n>,diska1>)
+u2 = dot(w_diska_n>,diska2>)
+u3 = dot(w_diska_n>,diska3>)
+u4 = dot(v_diskao_n>, n1>)
+u5 = dot(v_diskao_n>, n2>)
+u6 = dot(v_diskao_n>, n3>)
+gravity(-9.81*n3>)
+force_fakeahat> = aforce1 * n1> + aforce2 * n2> + aforce3 * n3>
+force_fakebhat> = bforce1 * n1> + bforce2 * n2> + bforce3 * n3>
+%autoz on
+zee_not=[aforce1,aforce2,aforce3,bforce1,bforce2,bforce3]
+zero = fr() + frstar()
+newzero = zero[1]
+solve(newzero,u')
+%'
+forcezero = [zero[2],zero[3],zero[4],zero[5],zero[6],zero[7]]
+%explicit(forcezero)
+forces = [aforce1,aforce2,aforce3,bforce1,bforce2,bforce3]
+%forcezero = replace(forcezero,fakeu1=u1,fakeu2=u2,fakeu3=u3,fakeu4=u4, &
+%	fakeu5=u5,fakeu6=u6,fakee1=e1,fakee2=e2,fakee3=e3,fakee4=e4, &
+%	fakeu1'=Dt(u1),fakeu2'=Dt(u2),fakeu3'=Dt(u3),fakeu4'=Dt(u4), &
+%	fakeu5'=Dt(u5),fakeu6'=Dt(u6))
+solve(forcezero,forces)
+fakee1 = e1
+fakee2 = e2
+fakee3 = e3
+fakee4 = e4
+fakee1' = e1'
+fakee2' = e2'
+fakee3' = e3'
+fakee4' = e4'
+fakeu1 = u1
+fakeu2 = u2
+fakeu3 = u3
+fakeu4 = u4
+fakeu5 = u5
+fakeu6 = u6
+fakeu1' = Dt(u1)
+fakeu2' = Dt(u2)
+fakeu3' = Dt(u3)
+fakeu4' = Dt(u4)
+fakeu5' = Dt(u5)
+fakeu6' = Dt(u6)
+posa1' = dot(v_diskao_n>,n1>)
+posa2' = dot(v_diskao_n>,n2>)
+posa3' = dot(v_diskao_n>,n3>)
+posb1' = dot(v_diskbo_n>,n1>)
+posb2' = dot(v_diskbo_n>,n2>)
+posb3' = dot(v_diskbo_n>,n3>)
+cahat1' = dot((v_diskao_n>+cross(w_diska_n>-u3*diska3>,p_diskao_ahat>)) ,n1>)
+cahat2' = dot((v_diskao_n>+cross(w_diska_n>-u3*diska3>,p_diskao_ahat>)) ,n2>)
+cahat3' = 0
+cbhat1' = dot((v_diskbo_n>+cross(w_diskb_n>-dot(w_diskb_n>,diskb3>)*diskb3>,p_diskbo_bhat>)) ,n1>)
+cbhat2' = dot((v_diskbo_n>+cross(w_diskb_n>-dot(w_diskb_n>,diskb3>)*diskb3>,p_diskbo_bhat>)) ,n2>)
+cbhat3' = 0
+ke = m/2*dot(v_diskao_n>,v_diskao_n>)+m/2*dot(v_diskbo_n>,v_diskbo_n>) + &
+	dot(w_diska_n>,dot(I_diska_diskao>>,w_diska_n>))/2 + &
+	dot(w_diskb_n>,dot(I_diskb_diskbo>>,w_diskb_n>))/2
+pe = 9.81*m*posa3 + 9.81*m*posb3
+qq1 = pi/4
+qq2 = 0
+qq3 = 0
+%qq1 = 0
+%qq2 = asin(rad/(rad+l))
+%qq3 = 0
+q1' = u1
+q2' = u2
+q3' = u3
+%'
+input rad = .1, m = 2
+input gamma = 1
+input e4 = cos(qq1/2)*cos(qq2/2)*cos(qq3/2)+sin(qq1/2)*sin(qq2/2)*sin(qq3/2)
+input e1 = sin(qq1/2)*cos(qq2/2)*cos(qq3/2)-cos(qq1/2)*sin(qq2/2)*sin(qq3/2)
+input e2 = cos(qq1/2)*sin(qq2/2)*cos(qq3/2)+sin(qq1/2)*cos(qq2/2)*sin(qq3/2)
+input e3 = cos(qq1/2)*cos(qq2/2)*sin(qq3/2)-sin(qq1/2)*sin(qq2/2)*cos(qq3/2)
+input u = 1
+inputVecto = [dot(p_ahat_diskao>,n1>), dot(p_ahat_diskao>,n2>), &
+	dot(p_ahat_diskao>,n3>), & 
+	dot(p_diskao_diskbo>,n1>) + dot(p_ahat_diskao>,n1>), &
+	dot(p_diskao_diskbo>,n2>) + dot(p_ahat_diskao>,n2>), &
+	dot(p_diskao_diskbo>,n3>) + dot(p_ahat_diskao>,n3>), &
+	0, 0, 0, dot(p_ahat_bhat>,n1>), dot(p_ahat_bhat>,n2>), 0, &
+	dot(v_diskao_n>,n1>),dot(v_diskao_n>,n2>), &
+	dot(v_diskao_n>,n3>),u1,u2,u3]
+explicit(inputVecto)
+inputVector = replace(inputVecto,e1=input(e1),e2=input(e2),e3=input(e3), &
+	e4=input(e4),u=input(u),a=input(a), &
+	gamma=input(gamma),rad=input(rad))
+input posa1 = inputVector[1], posa2 = inputVector[2], posa3 = inputVector[3]
+input posb1 = inputVector[4], posb2 = inputVector[5], posb3 = inputVector[6]
+input cahat1 = 0, cahat2 = 0, cahat3 = 0
+input cbhat1 = inputVector[10], cbhat2 = inputVector[11], cbhat3 = 0
+output t,ke,pe,ke+pe,e1,e2,e3,e4,u, &
+	cahat1,cahat2,cahat3,cbhat1,cbhat2,cbhat3, &
+	u1,u2,u3,u4,u5,u6, q1,q2,q3, &
+	aforce1,aforce2,aforce3,bforce1,bforce2,bforce3
+%code dynamics() TwinDisksConstraintForcesExtra.m
+%exit
+explicit(u4)
+explicit(aforce1)

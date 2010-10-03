@@ -1,17 +1,34 @@
-clear all; close all;
+% clear all; close all; warning off;
+% 
+% for ii = 1:1:10
+%     tfina = 3*pi/ii;
+%     TwinDisksConstraintForces(ii,tfina)
+%     data = load('TwinDisksConstraintForces.1');
+%     size(data)
+%     figure(1),plot(ii,min(data(:,26)),'.',ii,min(data(:,29)),'.'), hold on
+%     figure(1),plot(ii,max(data(:,26)),'.',ii,max(data(:,29)),'.'), hold on
+%     figure(2),plot(ii,min(data(:,24)),'.',ii,min(data(:,27)),'.'), hold on
+%     figure(2),plot(ii,max(data(:,24)),'.',ii,max(data(:,27)),'.'), hold on
+%     figure(3),plot(ii,min(data(:,25)),'.',ii,min(data(:,28)),'.'), hold on
+%     figure(3),plot(ii,max(data(:,25)),'.',ii,max(data(:,28)),'.'), hold on
+%     
+% end
+% 
+% figure(1), plot([1 20],[0 0]), hold on
 
-for ii = 1:1:20
-    tfina = 3*pi/ii;
-    TwinDisksConstraintForces(ii,tfina)
-    data = load('TwinDisksConstraintForces.1');
-    data = load('TwinDisksConstraintForces.1');
-    figure(1),plot(ii,min(data(:,26)),'.',ii,min(data(:,29)),'.'), hold on
-    figure(1),plot(ii,max(data(:,26)),'.',ii,max(data(:,29)),'.'), hold on
-    figure(2),plot(ii,min(data(:,24)),'.',ii,min(data(:,27)),'.'), hold on
-    figure(2),plot(ii,max(data(:,24)),'.',ii,max(data(:,27)),'.'), hold on
-    figure(3),plot(ii,min(data(:,25)),'.',ii,min(data(:,28)),'.'), hold on
-    figure(3),plot(ii,max(data(:,25)),'.',ii,max(data(:,28)),'.'), hold on
-    
-end
+clear all; close all; warning off;
 
-figure(1), plot([1 20],[0 0]), hold on
+TwinDisksConstraintForcesExtra(4,2)
+data = load('TwinDisksConstraintForcesExtra.1');
+% figure(1),plot(data(:,1),data(:,29)+data(:,26)), hold on
+% figure(2),plot(data(:,1),data(:,28)+data(:,25)), hold on
+% figure(3),plot(data(:,1),data(:,27)+data(:,24)), hold on
+% figure(4),plot(data(:,1),(data(:,28).^2+data(:,27).^2).^.5,data(:,1),(data(:,25).^2+data(:,24).^2).^.5), hold on
+% figure(5),plot(data(:,1),data(:,30),data(:,1),data(:,31)), hold on
+
+figure(1),plot(data(:,1),data(:,30),data(:,1),data(:,27))
+figure(2),plot(data(:,1),data(:,29),data(:,1),data(:,26))
+figure(3),plot(data(:,1),data(:,28),data(:,1),data(:,25))
+figure(4),plot(data(:,1),data(:,18),data(:,1),data(:,16),data(:,1),data(:,17))
+figure(5),plot(data(:,1),data(:,5),data(:,1),data(:,6),data(:,1),data(:,7),data(:,1),data(:,8),data(:,1),data(:,9))
+figure(6),plot(data(:,1),data(:,31))

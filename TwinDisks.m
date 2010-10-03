@@ -131,9 +131,9 @@ while 1,
 end
 mdlTerminate(T,VAR,0);
 data = load( 'TwinDisks.1' );
-% figure(1), plot(data(:,1),data(:,2),data(:,1),data(:,3),data(:,1),data(:,4))
+figure(1), plot(data(:,1),data(:,2),data(:,1),data(:,3),data(:,1),data(:,4))
 figure(2), plot(data(:,1),data(:,18),data(:,1),data(:,19),data(:,1),data(:,20))
-% figure(3), plot(data(:,1),data(:,7),data(:,1),data(:,8),data(:,1),data(:,9),data(:,1),data(:,10),data(:,1),data(:,11))
+figure(3), plot(data(:,1),data(:,7),data(:,1),data(:,8),data(:,1),data(:,9),data(:,1),data(:,10),data(:,1),data(:,11))
 
 
 

@@ -92,8 +92,8 @@ VAR(20) = u1;
 %===========================================================================
 function OpenOutputFilesAndWriteHeadings
 FileIdentifier = fopen('TwinDisksEig.1', 'wt');   if( FileIdentifier == -1 ) error('Error: unable to open file TwinDisksEig.1'); end
-% fprintf( 1,             '%%       t             ke             pe            ke+pe     dot(v_bhat_n>, dot(v_bhat_n>,       e1             e2             e3             e4             u1           cahat1         cahat2         cahat3         cbhat1         cbhat2         cbhat3     dot(w_diska_n> dot(w_diska_n> dot(w_diska_n>       a11            a12            a13            a14            a15            a21            a22            a23            a24            a25            a31            a32            a33            a34            a35            a41            a42            a43            a44            a45            a51            a52            a53            a54            a55            q1             q2             q3\n' );
-% fprintf( 1,             '%%    (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)\n\n' );
+fprintf( 1,             '%%       t             ke             pe            ke+pe     dot(v_bhat_n>, dot(v_bhat_n>,       e1             e2             e3             e4             u1           cahat1         cahat2         cahat3         cbhat1         cbhat2         cbhat3     dot(w_diska_n> dot(w_diska_n> dot(w_diska_n>       a11            a12            a13            a14            a15            a21            a22            a23            a24            a25            a31            a32            a33            a34            a35            a41            a42            a43            a44            a45            a51            a52            a53            a54            a55            q1             q2             q3\n' );
+fprintf( 1,             '%%    (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)\n\n' );
 fprintf(FileIdentifier, '%% FILE: TwinDisksEig.1\n%%\n' );
 fprintf(FileIdentifier, '%%       t             ke             pe            ke+pe     dot(v_bhat_n>, dot(v_bhat_n>,       e1             e2             e3             e4             u1           cahat1         cahat2         cahat3         cbhat1         cbhat2         cbhat3     dot(w_diska_n> dot(w_diska_n> dot(w_diska_n>       a11            a12            a13            a14            a15            a21            a22            a23            a24            a25            a31            a32            a33            a34            a35            a41            a42            a43            a44            a45            a51            a52            a53            a54            a55            q1             q2             q3\n' );
 fprintf(FileIdentifier, '%%    (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)        (UNITS)\n\n' );
@@ -867,7 +867,7 @@ a55 = 0.5*z(550);
 
 Output(1)=T;  Output(2)=ke;  Output(3)=pe;  Output(4)=ke+pe;  Output(5)=(-(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*z(15)*u2*z(5)-(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*z(15)*u2*z(2)+(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*(z(15)*u1-z(23)*u3)*z(6)+(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*(z(15)*u1-z(23)*u3)*z(3)+(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*z(23)*u2*z(7)+(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*z(23)*u2*z(4)-(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*z(21)*u3*z(5)-(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*z(21)*u3*z(2)+(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*z(21)*u1*z(7)+(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*z(21)*u1*z(4)+(z(6)*z(21)-z(23)*z(5)-z(7)*z(15))*(z(30)*u1+z(31)*u2+z(32)*u3)+(z(23)*z(2)+z(4)*z(15)-z(3)*z(21))*(z(33)*u1+z(34)*u2+z(35)*u3));  Output(6)=(-z(15)*u2*z(8)+(z(15)*u1-z(23)*u3)*z(9)+z(23)*u2*z(10)-z(21)*u3*z(8)+z(21)*u1*z(10));  Output(7)=e1;  Output(8)=e2;  Output(9)=e3;  Output(10)=e4;  Output(11)=u1;  Output(12)=cahat1;  Output(13)=cahat2;  Output(14)=cahat3;  Output(15)=cbhat1;  Output(16)=cbhat2;  Output(17)=cbhat3;  Output(18)=u1;  Output(19)=u2;  Output(20)=u3;  Output(21)=a11;  Output(22)=a12;  Output(23)=a13;  Output(24)=a14;  Output(25)=a15;  Output(26)=a21;  Output(27)=a22;  Output(28)=a23;  Output(29)=a24;  Output(30)=a25;  Output(31)=a31;  Output(32)=a32;  Output(33)=a33;  Output(34)=a34;  Output(35)=a35;  Output(36)=a41;  Output(37)=a42;  Output(38)=a43;  Output(39)=a44;  Output(40)=a45;  Output(41)=a51;  Output(42)=a52;  Output(43)=a53;  Output(44)=a54;  Output(45)=a55;  Output(46)=q1;  Output(47)=q2;  Output(48)=q3;
 FileIdentifier = fopen('all');
-WriteOutput( 1,                 Output(1:48) );
+% WriteOutput( 1,                 Output(1:48) );
 WriteOutput( FileIdentifier(1), Output(1:48) );
 
 
@@ -896,37 +896,3 @@ fprintf( 1, '    someName = load( ''TwinDisksEig.1'' );\n' );
 fprintf( 1, '    plot( someName(:,1), someName(:,2), ''-'', someName(:,1), someName(:,3), ''--'' )\n\n' );
 sys = [];
 
-
-
-%===========================================================================
-% Sfunction: System/Simulink function from standard template
-%===========================================================================
-function [sys,x0,str,ts] = Sfunction(t,x,u,flag)
-switch flag,
-  case 0,  [sys,x0,str,ts] = mdlInitializeSizes;    % Initialization of sys, initial state x0, state ordering string str, and sample times ts
-  case 1,  sys = mdlDerivatives(t,x,u);             % Calculate the derivatives of continuous states and store them in sys
-  case 2,  sys = mdlUpdate(t,x,u);                  % Update discrete states x(n+1) in sys
-  case 3,  sys = mdlOutputs(t,x,u);                 % Calculate outputs in sys
-  case 4,  sys = mdlGetTimeOfNextVarHit(t,x,u);     % Return next sample time for variable-step in sys
-  case 9,  sys = mdlTerminate(t,x,u);               % Perform end of simulation tasks and set sys=[]
-  otherwise error(['Unhandled flag = ',num2str(flag)]);
-end
-
-
-
-%===========================================================================
-% mdlInitializeSizes: Return the sizes, initial state VAR, and sample times ts
-%===========================================================================
-function [sys,VAR,stateOrderingStrings,timeSampling] = mdlInitializeSizes
-sizes = simsizes;             % Call simsizes to create a sizes structure
-sizes.NumContStates  = 20;    % sys(1) is the number of continuous states
-sizes.NumDiscStates  = 0;     % sys(2) is the number of discrete states
-sizes.NumOutputs     = 48;    % sys(3) is the number of outputs
-sizes.NumInputs      = 0;     % sys(4) is the number of inputs
-sizes.DirFeedthrough = 1;     % sys(6) is 1, and allows for the output to be a function of the input
-sizes.NumSampleTimes = 1;     % sys(7) is the number of samples times (the number of rows in ts)
-sys = simsizes(sizes);        % Convert it to a sizes array
-stateOrderingStrings = [];
-timeSampling         = [0 0]; % m-by-2 matrix containing the sample times
-OpenOutputFilesAndWriteHeadings;
-VAR = ReadUserInput;

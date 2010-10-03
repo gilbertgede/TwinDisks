@@ -1,0 +1,476 @@
+   (1) degrees off
+   (2) autoz on
+   (3) Newtonian N
+   (4) Bodies DiskA, DiskB
+   (5) bodies FakeA, FakeB
+   (6) points ahat,bhat
+   (7) points fakeahat, fakebhat
+   (8) motionvariables' u', fakeu{6}'
+   (9) variables e{4}',posa{3}',posb{3}',ke,pe,cahat{3}',cbhat{3}', q{3}'
+   (10) variables u{6}
+   (11) variables aforce{3},bforce{3}
+   (12) variables fakee{4}'
+   (13) constants l,rad,a,qq{3}, gamma
+   (14) l = sqrt(2) * rad * gamma
+-> (15) l = 1.414214*gamma*rad
+
+   (16) a = pi/2
+-> (17) a = 1.570796
+
+   (18) mass diska = m
+   (19) mass diskb = m
+   (20) inertia diska,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+-> (21) Z1 = m*rad^2
+-> (22) I_diska_diskaO>> = 0.25*Z1*DiskA1>*DiskA1> + 0.25*Z1*DiskA2>*DiskA2> +
+        0.5*Z1*DiskA3>*DiskA3>
+
+   (23) inertia diskb,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+-> (24) I_diskb_diskbO>> = 0.25*Z1*DiskB1>*DiskB1> + 0.25*Z1*DiskB2>*DiskB2> +
+        0.5*Z1*DiskB3>*DiskB3>
+
+   (25) mass fakea = m
+   (26) mass fakeb = m
+   (27) inertia fakea,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+-> (28) I_fakea_fakeaO>> = 0.25*Z1*FakeA1>*FakeA1> + 0.25*Z1*FakeA2>*FakeA2> +
+        0.5*Z1*FakeA3>*FakeA3>
+
+   (29) inertia fakeb,m*rad*rad/4,m*rad*rad/4,m*rad*rad/2
+-> (30) I_fakeb_fakebO>> = 0.25*Z1*FakeB1>*FakeB1> + 0.25*Z1*FakeB2>*FakeB2> +
+        0.5*Z1*FakeB3>*FakeB3>
+
+   (31) dircos(N,DiskA,Euler,e1,e2,e3,e4)
+-> (32) Z2 = 1 - 2*e2^2 - 2*e3^2
+-> (33) Z3 = 2*e1*e2 - 2*e3*e4
+-> (34) Z4 = 2*e1*e3 + 2*e2*e4
+-> (35) Z5 = 2*e1*e2 + 2*e3*e4
+-> (36) Z6 = 1 - 2*e1^2 - 2*e3^2
+-> (37) Z7 = 2*e2*e3 - 2*e1*e4
+-> (38) Z8 = 2*e1*e3 - 2*e2*e4
+-> (39) Z9 = 2*e1*e4 + 2*e2*e3
+-> (40) Z10 = 1 - 2*e1^2 - 2*e2^2
+-> (41) N_DiskA = [Z2, Z3, Z4; Z5, Z6, Z7; Z8, Z9, Z10]
+
+   (42) dircos(DiskA,DiskB,body123,pi/2,0,0)
+-> (43) DiskA_DiskB = [1, 0, 0; 0, 0, -1; 0, 1, 0]
+
+   (44) dircos(N,fakeA,Euler,fakee1,fakee2,fakee3,fakee4)
+-> (45) Z11 = 1 - 2*fakee2^2 - 2*fakee3^2
+-> (46) Z12 = 2*fakee1*fakee2 - 2*fakee3*fakee4
+-> (47) Z13 = 2*fakee1*fakee3 + 2*fakee2*fakee4
+-> (48) Z14 = 2*fakee1*fakee2 + 2*fakee3*fakee4
+-> (49) Z15 = 1 - 2*fakee1^2 - 2*fakee3^2
+-> (50) Z16 = 2*fakee2*fakee3 - 2*fakee1*fakee4
+-> (51) Z17 = 2*fakee1*fakee3 - 2*fakee2*fakee4
+-> (52) Z18 = 2*fakee1*fakee4 + 2*fakee2*fakee3
+-> (53) Z19 = 1 - 2*fakee1^2 - 2*fakee2^2
+-> (54) N_fakeA = [Z11, Z12, Z13; Z14, Z15, Z16; Z17, Z18, Z19]
+
+   (55) dircos(fakeA,fakeB,body123,pi/2,0,0)
+-> (56) fakeA_fakeB = [1, 0, 0; 0, 0, -1; 0, 1, 0]
+
+   (57) %gamma is l/sqrt(2)/r
+   (58) p_diskao_ahat> = rad * unitvec(dot(diska3>,n3>)*diska3>-n3>)
+-> (59) Z20 = 1 - Z10^2
+-> (60) Z21 = Z20^0.5
+-> (61) Z22 = Z10/Z21
+-> (62) Z23 = 1/Z21
+-> (63) Z24 = rad*Z22
+-> (64) Z25 = rad*Z23
+-> (65) p_diskao_ahat> = Z24*DiskA3> - Z25*N3>
+
+   (66) p_diskbo_bhat> = rad * unitvec(dot(diskb3>,n3>)*diskb3>-n3>)
+-> (67) DiskB_N = [Z2, Z5, Z8; Z4, Z7, Z10; -Z3, -Z6, -Z9]
+-> (68) Z26 = 1 - Z9^2
+-> (69) Z27 = Z26^0.5
+-> (70) Z28 = Z9/Z27
+-> (71) Z29 = 1/Z27
+-> (72) Z30 = rad*Z28
+-> (73) Z31 = rad*Z29
+-> (74) p_diskbo_bhat> = -Z30*DiskB3> - Z31*N3>
+
+   (75) p_diskao_diskbo> = -l * diska1>
+-> (76) p_diskao_diskbo> = -l*DiskA1>
+
+   (77) p_fakeao_fakeahat> = rad * unitvec(dot(fakea3>,n3>)*fakea3>-n3>)
+-> (78) Z32 = 1 - Z19^2
+-> (79) Z33 = Z32^0.5
+-> (80) Z34 = Z19/Z33
+-> (81) Z35 = 1/Z33
+-> (82) Z36 = rad*Z34
+-> (83) Z37 = rad*Z35
+-> (84) p_fakeao_fakeahat> = Z36*FakeA3> - Z37*N3>
+
+   (85) p_fakebo_fakebhat> = rad * unitvec(dot(fakeb3>,n3>)*fakeb3>-n3>)
+-> (86) FakeB_N = [Z11, Z14, Z17; Z13, Z16, Z19; -Z12, -Z15, -Z18]
+-> (87) Z38 = 1 - Z18^2
+-> (88) Z39 = Z38^0.5
+-> (89) Z40 = Z18/Z39
+-> (90) Z41 = 1/Z39
+-> (91) Z42 = rad*Z40
+-> (92) Z43 = rad*Z41
+-> (93) p_fakebo_fakebhat> = -Z42*FakeB3> - Z43*N3>
+
+   (94) p_fakeao_fakebo> = -l * fakea1>
+-> (95) p_fakeao_fakebo> = -l*FakeA1>
+
+   (96) w_diska_n> = u * unitvec(p_ahat_bhat>)
+-> (97) Z44 = Z25 - Z31
+-> (98) Z45 = l^2
+-> (99) Z46 = Z45 + Z24^2 + Z30^2 + Z44^2 + 2*Z9*Z30*Z44 - 2*l*Z8*Z44 - 2*Z10*
+        Z24*Z44
+-> (100) Z47 = Z46^0.5
+-> (101) Z48 = Z24/Z47
+-> (102) Z49 = Z44/Z47
+-> (103) Z50 = l/Z47
+-> (104) Z51 = Z30/Z47
+-> (105) Z52 = Z8*Z49 - Z50
+-> (106) Z53 = Z51 + Z9*Z49
+-> (107) Z54 = Z10*Z49 - Z48
+-> (108) w_diska_n> = Z52*u*DiskA1> + Z53*u*DiskA2> + Z54*u*DiskA3>
+
+   (109) w_diskb_diska> = 0>
+-> (110) w_diskb_diska> = 0>
+
+   (111) w_fakea_n> = fakeu1 * fakea1> + fakeu2 * fakea2> + fakeu3 * fakea3>
+-> (112) w_fakea_n> = fakeu1*FakeA1> + fakeu2*FakeA2> + fakeu3*FakeA3>
+
+   (113) w_fakeb_fakea> = 0>
+-> (114) w_fakeb_fakea> = 0>
+
+   (115) kindiffs(N,DiskA,Euler,e1,e2,e3,e4)
+-> (116) Z55 = e2*Z54 + e4*Z52 - e3*Z53
+-> (117) e1' = 0.5*Z55*u
+-> (118) Z56 = e3*Z52 + e4*Z53 - e1*Z54
+-> (119) e2' = 0.5*Z56*u
+-> (120) Z57 = e1*Z53 + e4*Z54 - e2*Z52
+-> (121) e3' = 0.5*Z57*u
+-> (122) Z58 = e1*Z52 + e2*Z53 + e3*Z54
+-> (123) e4' = -0.5*Z58*u
+
+   (124) kindiffs(N,FakeA,Euler,fakee1,fakee2,fakee3,fakee4)
+-> (125) fakee1' = 0.5*fakee2*fakeu3 + 0.5*fakee4*fakeu1 - 0.5*fakee3*fakeu2
+-> (126) fakee2' = 0.5*fakee3*fakeu1 + 0.5*fakee4*fakeu2 - 0.5*fakee1*fakeu3
+-> (127) fakee3' = 0.5*fakee1*fakeu2 + 0.5*fakee4*fakeu3 - 0.5*fakee2*fakeu1
+-> (128) fakee4' = -0.5*fakee1*fakeu1 - 0.5*fakee2*fakeu2 - 0.5*fakee3*fakeu3
+
+   (129) v_ahat_n> = 0>
+-> (130) v_ahat_n> = 0>
+
+   (131) v_diskao_n> = v_ahat_n> + cross(w_diska_n>,p_ahat_diskao>)
+-> (132) Z59 = Z24*Z53
+-> (133) Z60 = Z24*Z52
+-> (134) Z61 = Z25*(Z5*Z52+Z6*Z53+Z7*Z54)
+-> (135) Z62 = Z25*(Z2*Z52+Z3*Z53+Z4*Z54)
+-> (136) v_diskao_n> = -Z59*u*DiskA1> + Z60*u*DiskA2> + Z61*u*N1> - Z62*u*N2>
+
+   (137) v_diskbo_n> = v_diskao_n> + cross(w_diska_n>,p_diskao_diskbo>)
+-> (138) Z63 = Z60 - l*Z54
+-> (139) Z64 = l*Z53
+-> (140) v_diskbo_n> = -Z59*u*DiskA1> + Z63*u*DiskA2> + Z64*u*DiskA3> + Z61*u*
+         N1> - Z62*u*N2>
+
+   (141) v_bhat_n> = 0>
+-> (142) v_bhat_n> = 0>
+
+   (143) v_fakeao_n> = fakeu4 * n1> + fakeu5 * n2> + fakeu6 * n3>
+-> (144) v_fakeao_n> = fakeu4*N1> + fakeu5*N2> + fakeu6*N3>
+
+   (145) v_fakebo_n> = v_fakeao_n> + cross(w_fakea_n>,p_fakeao_fakebo>)
+-> (146) v_fakebo_n> = -l*fakeu3*FakeA2> + l*fakeu2*FakeA3> + fakeu4*N1> + fak
+         eu5*N2> + fakeu6*N3>
+
+   (147) v_fakeahat_n> = v_fakeao_n> + cross(w_diska_n>,p_fakeao_fakeahat>)
+-> (148) Z65 = Z2*Z11 + Z5*Z14 + Z8*Z17
+-> (149) Z66 = Z2*Z12 + Z5*Z15 + Z8*Z18
+-> (150) Z67 = Z2*Z13 + Z5*Z16 + Z8*Z19
+-> (151) Z68 = Z3*Z11 + Z6*Z14 + Z9*Z17
+-> (152) Z69 = Z3*Z12 + Z6*Z15 + Z9*Z18
+-> (153) Z70 = Z3*Z13 + Z6*Z16 + Z9*Z19
+-> (154) Z71 = Z4*Z11 + Z7*Z14 + Z10*Z17
+-> (155) Z72 = Z4*Z12 + Z7*Z15 + Z10*Z18
+-> (156) Z73 = Z4*Z13 + Z7*Z16 + Z10*Z19
+-> (157) DiskA_FakeA = [Z65, Z66, Z67; Z68, Z69, Z70; Z71, Z72, Z73]
+-> (158) Z74 = Z36*(Z52*Z66+Z53*Z69+Z54*Z72)
+-> (159) Z75 = Z36*(Z52*Z65+Z53*Z68+Z54*Z71)
+-> (160) Z76 = Z37*(Z5*Z52+Z6*Z53+Z7*Z54)
+-> (161) Z77 = Z37*(Z2*Z52+Z3*Z53+Z4*Z54)
+-> (162) v_fakeahat_n> = Z74*u*FakeA1> - Z75*u*FakeA2> + (fakeu4-Z76*u)*N1> + (
+         fakeu5+Z77*u)*N2> + fakeu6*N3>
+
+   (163) v_fakebhat_n> = v_fakebo_n> + cross(w_diska_n>,p_fakebo_fakebhat>)
+-> (164) Z78 = -Z2*Z12 - Z5*Z15 - Z8*Z18
+-> (165) Z79 = -Z3*Z12 - Z6*Z15 - Z9*Z18
+-> (166) Z80 = -Z4*Z12 - Z7*Z15 - Z10*Z18
+-> (167) DiskA_FakeB = [Z65, Z67, Z78; Z68, Z70, Z79; Z71, Z73, Z80]
+-> (168) Z81 = Z42*(Z52*Z67+Z53*Z70+Z54*Z73)
+-> (169) Z82 = Z42*(Z52*Z65+Z53*Z68+Z54*Z71)
+-> (170) Z83 = Z43*(Z5*Z52+Z6*Z53+Z7*Z54)
+-> (171) Z84 = Z43*(Z2*Z52+Z3*Z53+Z4*Z54)
+-> (172) v_fakebhat_n> = -l*fakeu3*FakeA2> + l*fakeu2*FakeA3> - Z81*u*FakeB1>
+          + Z82*u*FakeB2> + (fakeu4-Z83*u)*N1> + (fakeu5+Z84*u)*N2> + fakeu6*
+         N3>
+
+   (173) u1 = dot(w_diska_n>,diska1>)
+-> (174) u1 = Z52*u
+
+   (175) u2 = dot(w_diska_n>,diska2>)
+-> (176) u2 = Z53*u
+
+   (177) u3 = dot(w_diska_n>,diska3>)
+-> (178) u3 = Z54*u
+
+   (179) u4 = dot(v_ahat_n>, n1>)
+-> (180) u4 = 0
+
+   (181) u5 = dot(v_ahat_n>, n2>)
+-> (182) u5 = 0
+
+   (183) u6 = dot(v_ahat_n>, n3>)
+-> (184) u6 = 0
+
+   (185) gravity(-9.81*n3>)
+-> (186) FORCE_DiskAO> = -9.81*m*N3>
+-> (187) FORCE_DiskBO> = -9.81*m*N3>
+-> (188) FORCE_FakeAO> = -9.81*m*N3>
+-> (189) FORCE_FakeBO> = -9.81*m*N3>
+
+   (190) force_fakeahat> = aforce1 * n1> + aforce2 * n2> + aforce3 * n3>
+-> (191) force_fakeahat> = aforce1*N1> + aforce2*N2> + aforce3*N3>
+
+   (192) force_fakebhat> = bforce1 * n1> + bforce2 * n2> + bforce3 * n3>
+-> (193) force_fakebhat> = bforce1*N1> + bforce2*N2> + bforce3*N3>
+
+   (194) zee_not = [aforce1,aforce2,aforce3,bforce1,bforce2,bforce3]
+-> (195) zee_not = [aforce1, aforce2, aforce3, bforce1, bforce2, bforce3]
+
+   (196) zero = fr() + frstar()
+-> (197) Z85 = Z77 + Z14*Z74 - Z15*Z75
+-> (198) Z86 = Z11*Z74 - Z76 - Z12*Z75
+-> (199) Z87 = Z17*Z74 - Z18*Z75
+-> (200) Z88 = Z84 + Z16*Z82 - Z14*Z81
+-> (201) Z89 = Z13*Z82 - Z83 - Z11*Z81
+-> (202) Z90 = Z19*Z82 - Z17*Z81
+-> (203) Z91 = m*(2*Z8*Z59-Z9*Z60-Z9*Z63-Z10*Z64)
+-> (204) Z92 = l*Z13
+-> (205) Z93 = l*Z16
+-> (206) Z94 = l*Z19
+-> (207) Z95 = l*m
+-> (208) Z96 = Z95*Z19
+-> (209) Z97 = l*Z12
+-> (210) Z98 = l*Z15
+-> (211) Z99 = l*Z18
+-> (212) Z100 = Z95*Z18
+-> (213) Z101 = Z52*u
+-> (214) Z102 = Z53*u
+-> (215) Z103 = Z54*u
+-> (216) Z104 = (e1*Z57+e2*Z58+e3*Z55-e4*Z56)*u
+-> (217) Z105 = (e1*Z55+e2*Z56)*u
+-> (218) Z106 = Z10*Z105/Z20^0.5
+-> (219) Z107 = rad*Z106/Z21^2
+-> (220) Z108 = (e1*Z58-e2*Z57-e3*Z56-e4*Z55)*u
+-> (221) Z109 = Z9*Z108/Z26^0.5
+-> (222) Z110 = rad*Z109/Z27^2
+-> (223) Z111 = (Z10*Z106+Z21*Z105)/Z21^2
+-> (224) Z112 = (Z9*Z109+Z27*Z108)/Z27^2
+-> (225) Z113 = 4*Z24*Z44*Z105 + 4*rad*Z10*Z44*Z111 + 2*l*Z8*(2*Z107-Z110) + 2*
+         Z10*Z24*(2*Z107-Z110) - 4*rad*Z24*Z111 - 2*l*Z44*Z104 - 2*rad*Z30*Z112
+         - 2*Z30*Z44*Z108 - 2*rad*Z9*Z44*Z112 - 2*Z44*(2*Z107-Z110) - 2*Z9*Z30*
+         (2*Z107-Z110)
+
+-> (226) Z114 = (Z44*Z113/Z46^0.5+2*Z47*(2*Z107-Z110))/Z47^2
+-> (227) Z115 = l*Z113/(Z46^0.5*Z47^2)
+-> (228) Z116 = 0.5*Z115 + Z49*Z104 - 0.5*Z8*Z114
+-> (229) Z117 = u*Z116
+-> (230) Z118 = (2*rad*Z47*Z112+Z30*Z113/Z46^0.5)/Z47^2
+-> (231) Z119 = -0.5*Z118 - Z49*Z108 - 0.5*Z9*Z114
+-> (232) Z120 = u*Z119
+-> (233) Z121 = (4*rad*Z47*Z111+Z24*Z113/Z46^0.5)/Z47^2
+-> (234) Z122 = 0.5*Z121 - 2*Z49*Z105 - 0.5*Z10*Z114
+-> (235) Z123 = u*Z122
+-> (236) Z124 = Z1*Z101
+-> (237) Z125 = Z1*Z102
+-> (238) Z126 = Z1*Z103
+-> (239) Z127 = Z1*Z52
+-> (240) Z128 = Z1*Z117
+-> (241) Z129 = Z1*Z53
+-> (242) Z130 = Z1*Z120
+-> (243) Z131 = Z1*Z54
+-> (244) Z132 = Z1*Z123
+-> (245) Z133 = 0.25*Z101*Z125 - 0.25*Z102*Z124
+-> (246) Z134 = 0.25*Z103*Z124 - 0.5*Z101*Z126
+-> (247) Z135 = 0.5*Z102*Z126 - 0.25*Z103*Z125
+-> (248) Z136 = 0.5*Z101*Z125 - 0.25*Z102*Z124
+-> (249) Z137 = 0.25*Z101*Z126 - 0.25*Z103*Z124
+-> (250) Z138 = 0.25*Z102*Z126 - 0.5*Z103*Z125
+-> (251) Z139 = Z1*fakeu1
+-> (252) Z140 = Z1*fakeu2
+-> (253) Z141 = Z1*fakeu3
+-> (254) Z142 = 0.25*fakeu1*Z140 - 0.25*fakeu2*Z139
+-> (255) Z143 = 0.25*fakeu3*Z139 - 0.5*fakeu1*Z141
+-> (256) Z144 = 0.5*fakeu2*Z141 - 0.25*fakeu3*Z140
+-> (257) Z145 = 0.5*fakeu1*Z140 - 0.25*fakeu2*Z139
+-> (258) Z146 = 0.25*fakeu1*Z141 - 0.25*fakeu3*Z139
+-> (259) Z147 = 0.25*fakeu2*Z141 - 0.5*fakeu3*Z140
+-> (260) Z148 = Z59*u
+-> (261) Z149 = Z60*u
+-> (262) Z150 = Z61*u
+-> (263) Z151 = Z62*u
+-> (264) Z152 = Z24*Z119 - 2*rad*Z53*Z111
+-> (265) Z153 = u*Z152
+-> (266) Z154 = Z24*Z116 - 2*rad*Z52*Z111
+-> (267) Z155 = u*Z154
+-> (268) Z156 = (e3*Z58-e1*Z56-e2*Z55-e4*Z57)*u
+-> (269) Z157 = (e1*Z55+e3*Z57)*u
+-> (270) Z158 = (e1*Z58+e2*Z57+e3*Z56-e4*Z55)*u
+-> (271) Z159 = -2*(Z5*Z52+Z6*Z53+Z7*Z54)*Z107 - Z25*(Z52*Z156+2*Z53*Z157-Z5*
+         Z116-Z6*Z119-Z7*Z122-Z54*Z158)
+-> (272) Z160 = u*Z159
+-> (273) Z161 = (e2*Z56+e3*Z57)*u
+-> (274) Z162 = (e1*Z56+e2*Z55+e3*Z58-e4*Z57)*u
+-> (275) Z163 = (e2*Z58-e1*Z57-e3*Z55-e4*Z56)*u
+-> (276) Z164 = Z25*(Z2*Z116+Z3*Z119+Z4*Z122+Z53*Z162-2*Z52*Z161-Z54*Z163) - 2*
+         (Z2*Z52+Z3*Z53+Z4*Z54)*Z107
+-> (277) Z165 = u*Z164
+-> (278) Z166 = -Z153 - Z103*Z149
+-> (279) Z167 = Z101*Z149 + Z102*Z148
+-> (280) Z168 = Z155 - Z103*Z148
+-> (281) Z169 = Z63*u
+-> (282) Z170 = Z64*u
+-> (283) Z171 = Z154 - l*Z122
+-> (284) Z172 = u*Z171
+-> (285) Z173 = l*u*Z119
+-> (286) Z174 = Z102*Z170 - Z153 - Z103*Z169
+-> (287) Z175 = Z173 + Z101*Z169 + Z102*Z148
+-> (288) Z176 = Z172 - Z101*Z170 - Z103*Z148
+-> (289) Z177 = l*fakeu3
+-> (290) Z178 = l*fakeu2
+-> (291) Z179 = fakeu1*Z178
+-> (292) Z180 = fakeu1*Z177
+-> (293) Z181 = fakeu2*Z178 + fakeu3*Z177
+-> (294) Z182 = 0.5*Z52*Z127 + 0.75*Z53*Z129 + 0.75*Z54*Z131 + m*(Z60^2+2*Z59^2
+         +2*Z61^2+2*Z62^2+2*Z3*Z60*Z61+4*Z5*Z59*Z62-2*Z6*Z60*Z62) + m*(Z63^2+
+         Z64^2+2*Z3*Z61*Z63+2*Z4*Z61*Z64-4*Z2*Z59*Z61-2*Z6*Z62*Z63-2*Z7*Z62*Z64
+         )
+
+-> (295) Z183 = Z52*Z135 + Z52*Z138 + Z53*Z134 + Z54*Z133 + Z54*Z136 + 0.5*Z52*
+         Z128 + 0.75*Z53*Z130 + 0.75*Z54*Z132 + m*(Z60*Z168+2*Z61*Z160+2*Z62*
+         Z165+Z2*Z61*Z166+Z3*Z60*Z160+Z3*Z61*Z168+Z4*Z61*Z167+2*Z5*Z59*Z165-Z59
+         *Z166-Z5*Z62*Z166-Z6*Z60*Z165-Z6*Z62*Z168-Z7*Z62*Z167) + m*(Z63*Z176+
+         Z64*Z175+Z2*Z61*Z174+Z3*Z61*Z176+Z3*Z63*Z160+Z4*Z61*Z175+Z4*Z64*Z160-
+         Z59*Z174-2*Z2*Z59*Z160-Z5*Z62*Z174-Z6*Z62*Z176-Z6*Z63*Z165-Z7*Z62*Z175
+         -Z7*Z64*Z165) - Z53*Z137
+
+-> (296) Z184 = Z144 + Z147
+-> (297) Z185 = m*l^2 + 0.75*Z1
+-> (298) Z186 = Z95*Z13
+-> (299) Z187 = Z95*Z16
+-> (300) Z188 = Z143 - Z146 - Z95*Z180
+-> (301) Z189 = Z95*Z12
+-> (302) Z190 = Z95*Z15
+-> (303) Z191 = Z142 + Z145 + Z95*Z179
+-> (304) Z192 = m*(Z11*Z181-Z12*Z179-Z13*Z180)
+-> (305) Z193 = m*(Z14*Z181-Z15*Z179-Z16*Z180)
+-> (306) Z194 = m*(Z17*Z181-Z18*Z179-Z19*Z180)
+-> (307) zero[1] = 9.81*Z91 + aforce1*Z86 + aforce2*Z85 + aforce3*Z87 + bforce1
+         *Z89 + bforce2*Z88 + bforce3*Z90 - Z183 - Z182*u'
+
+-> (308) zero[2] = -Z184 - 0.5*Z1*fakeu1'
+-> (309) zero[3] = bforce1*Z92 + bforce2*Z93 + bforce3*Z94 - 9.81*Z96 - Z188 -
+         Z185*fakeu2' - Z96*fakeu6' - Z186*fakeu4' - Z187*fakeu5'
+
+-> (310) zero[4] = 9.81*Z100 + Z100*fakeu6' + Z189*fakeu4' + Z190*fakeu5' - bf
+         orce1*Z97 - bforce2*Z98 - bforce3*Z99 - Z191 - Z185*fakeu3'
+
+-> (311) zero[5] = aforce1 + bforce1 + Z189*fakeu3' - Z192 - 2*m*fakeu4' - Z186
+         *fakeu2'
+-> (312) zero[6] = aforce2 + bforce2 + Z190*fakeu3' - Z193 - 2*m*fakeu5' - Z187
+         *fakeu2'
+-> (313) zero[7] = aforce3 + bforce3 + Z100*fakeu3' - 19.62*m - Z194 - 2*m*fak
+         eu6' - Z96*fakeu2'
+
+   (314) forcezero = [zero[2],zero[3],zero[4],zero[5],zero[6],zero[7]]
+-> (315) forcezero[1,1] = -Z184 - 0.5*Z1*fakeu1'
+-> (316) forcezero[1,2] = bforce1*Z92 + bforce2*Z93 + bforce3*Z94 - 9.81*Z96 -
+         Z188 - Z185*fakeu2' - Z96*fakeu6' - Z186*fakeu4' - Z187*fakeu5'
+
+-> (317) forcezero[1,3] = 9.81*Z100 + Z100*fakeu6' + Z189*fakeu4' + Z190*fakeu
+         5' - bforce1*Z97 - bforce2*Z98 - bforce3*Z99 - Z191 - Z185*fakeu3'
+
+-> (318) forcezero[1,4] = aforce1 + bforce1 + Z189*fakeu3' - Z192 - 2*m*fakeu4'
+         - Z186*fakeu2'
+-> (319) forcezero[1,5] = aforce2 + bforce2 + Z190*fakeu3' - Z193 - 2*m*fakeu5'
+         - Z187*fakeu2'
+-> (320) forcezero[1,6] = aforce3 + bforce3 + Z100*fakeu3' - 19.62*m - Z194 - 2
+         *m*fakeu6' - Z96*fakeu2'
+
+   (321) explicit(forcezero)
+-> (322) forcezero[1,1] = -0.5*m*rad^2*fakeu1'
+-> (323) forcezero[1,2] = 0.25*rad*(11.31371*gamma*bforce1*(fakee1*fakee3+fake
+         e2*fakee4)+5.656854*gamma*bforce3*(1-2*fakee1^2-2*fakee2^2)+m*rad*(1+8
+         *gamma^2)*fakeu1*fakeu3+11.31371*gamma*m*(fakee1*fakee4-fakee2*fakee3)
+         *fakeu5'-11.31371*gamma*bforce2*(fakee1*fakee4-fakee2*fakee3)-55.49374
+         *gamma*m*(1-2*fakee1^2-2*fakee2^2)-11.31371*gamma*m*(fakee1*fakee3+fa
+         kee2*fakee4)*fakeu4'-3*m*rad*(1+2.666667*gamma^2)*fakeu2'-5.656854*ga
+         mma*m*(1-2*fakee1^2-2*fakee2^2)*fakeu6')
+
+-> (324) forcezero[1,3] = -0.25*rad*(11.31371*gamma*bforce3*(fakee1*fakee4+fak
+         ee2*fakee3)+11.31371*gamma*bforce1*(fakee1*fakee2-fakee3*fakee4)+5.65
+         6854*gamma*bforce2*(1-2*fakee1^2-2*fakee3^2)+m*rad*(1+8*gamma^2)*fake
+         u1*fakeu2+3*m*rad*(1+2.666667*gamma^2)*fakeu3'-110.9875*gamma*m*(fake
+         e1*fakee4+fakee2*fakee3)-11.31371*gamma*m*(fakee1*fakee4+fakee2*fakee3
+         )*fakeu6'-11.31371*gamma*m*(fakee1*fakee2-fakee3*fakee4)*fakeu4'-5.65
+         6854*gamma*m*(1-2*fakee1^2-2*fakee3^2)*fakeu5')
+
+-> (325) forcezero[1,4] = aforce1 + bforce1 + 1.414214*gamma*m*rad*(2*(fakee1*
+         fakee3+fakee2*fakee4)*fakeu1*fakeu3+2*(fakee1*fakee2-fakee3*fakee4)*
+         fakeu1*fakeu2-(1-2*fakee2^2-2*fakee3^2)*(fakeu2^2+fakeu3^2)) + 2.8284
+         27*gamma*m*rad*(fakee1*fakee2-fakee3*fakee4)*fakeu3' - 2*m*fakeu4' - 
+         2.828427*gamma*m*rad*(fakee1*fakee3+fakee2*fakee4)*fakeu2'
+
+-> (326) forcezero[1,5] = aforce2 + bforce2 + 1.414214*gamma*m*rad*((1-2*fakee1
+         ^2-2*fakee3^2)*fakeu1*fakeu2-2*(fakee1*fakee4-fakee2*fakee3)*fakeu1*
+         fakeu3-2*(fakee1*fakee2+fakee3*fakee4)*(fakeu2^2+fakeu3^2)) + 2.828427
+         *gamma*m*rad*(fakee1*fakee4-fakee2*fakee3)*fakeu2' + 1.414214*gamma*m*
+         rad*(1-2*fakee1^2-2*fakee3^2)*fakeu3' - 2*m*fakeu5'
+
+-> (327) forcezero[1,6] = aforce3 + bforce3 + 1.414214*gamma*m*rad*(2*(fakee1*
+         fakee4+fakee2*fakee3)*fakeu1*fakeu2+(1-2*fakee1^2-2*fakee2^2)*fakeu1*
+         fakeu3-2*(fakee1*fakee3-fakee2*fakee4)*(fakeu2^2+fakeu3^2)) + 2.828427
+         *gamma*m*rad*(fakee1*fakee4+fakee2*fakee3)*fakeu3' - 19.62*m - 2*m*fa
+         keu6' - 1.414214*gamma*m*rad*(1-2*fakee1^2-2*fakee2^2)*fakeu2'
+
+   (328) forces = [aforce1,aforce2,aforce3,bforce1,bforce2,bforce3]
+-> (329) forces = [aforce1, aforce2, aforce3, bforce1, bforce2, bforce3]
+
+   (330) forcezero = replace(forcezero,fakeu1=u1,fakeu2=u2,fakeu3=u3,fakeu4=u4, &
+	fakeu5=u5,fakeu6=u6,fakee1=e1,fakee2=e2,fakee3=e3,fakee4=e4, &
+	fakeu1'=Dt(u1),fakeu2'=Dt(u2),fakeu3'=Dt(u3),fakeu4'=Dt(u4), &
+	fakeu5'=Dt(u5),fakeu6'=Dt(u6))
+-> (331) forcezero[1,1] = -0.5*m*rad^2*(u*Z116+Z52*u')
+-> (332) forcezero[1,2] = 0.25*rad*(11.31371*gamma*bforce1*(e1*e3+e2*e4)+m*rad*
+         (1+8*gamma^2)*u1*u3+5.656854*gamma*bforce3*(1-2*e1^2-2*e2^2)-11.31371*
+         gamma*bforce2*(e1*e4-e2*e3)-55.49374*gamma*m*(1-2*e1^2-2*e2^2)-3*m*rad
+         *(1+2.666667*gamma^2)*(u*Z119+Z53*u'))
+
+-> (333) forcezero[1,3] = 0.25*rad*(110.9875*gamma*m*(e1*e4+e2*e3)-11.31371*ga
+         mma*bforce3*(e1*e4+e2*e3)-11.31371*gamma*bforce1*(e1*e2-e3*e4)-m*rad*(
+         1+8*gamma^2)*u1*u2-5.656854*gamma*bforce2*(1-2*e1^2-2*e3^2)-3*m*rad*(1
+         +2.666667*gamma^2)*(u*Z122+Z54*u'))
+
+-> (334) forcezero[1,4] = aforce1 + bforce1 + 1.414214*gamma*m*rad*(2*u1*u3*(
+         e1*e3+e2*e4)+2*u1*u2*(e1*e2-e3*e4)-(u2^2+u3^2)*(1-2*e2^2-2*e3^2)) + 
+         2.828427*gamma*m*rad*(e1*e2-e3*e4)*(u*Z122+Z54*u') - 2.828427*gamma*m*
+         rad*(e1*e3+e2*e4)*(u*Z119+Z53*u')
+
+-> (335) forcezero[1,5] = aforce2 + bforce2 + 2.828427*gamma*m*rad*(e1*e4-e2*
+         e3)*(u*Z119+Z53*u') + 1.414214*gamma*m*rad*(1-2*e1^2-2*e3^2)*(u*Z122+
+         Z54*u') - 1.414214*gamma*m*rad*(2*u1*u3*(e1*e4-e2*e3)+2*(e1*e2+e3*e4)*
+         (u2^2+u3^2)-u1*u2*(1-2*e1^2-2*e3^2))
+
+-> (336) forcezero[1,6] = aforce3 + bforce3 + 1.414214*gamma*m*rad*(2*u1*u2*(
+         e1*e4+e2*e3)+u1*u3*(1-2*e1^2-2*e2^2)-2*(u2^2+u3^2)*(e1*e3-e2*e4)) + 
+         2.828427*gamma*m*rad*(e1*e4+e2*e3)*(u*Z122+Z54*u') - 19.62*m - 1.4142
+         14*gamma*m*rad*(1-2*e1^2-2*e2^2)*(u*Z119+Z53*u')
+
+   (337) solve(forcezero,forces)
+   (338) 
